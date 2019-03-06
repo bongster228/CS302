@@ -44,9 +44,7 @@ bool getArguments(int argc, char *argv[], unsigned long long &threadCnt, unsigne
         return false;
     }
 
-    cout << argv[1] << endl;
-
-    if(argv[1] != "-t"){
+    if(string(argv[1]) != "-t"){
         cout << "missing -t(thread) indicator" << endl;
         return false;
     }
@@ -60,7 +58,7 @@ bool getArguments(int argc, char *argv[], unsigned long long &threadCnt, unsigne
         return false;
     }
 
-    if(argv[3] != "-l"){
+    if(string(argv[3]) != "-l"){
         cout << "missing -l(limit) indicator" << endl;
         return false;
     }
