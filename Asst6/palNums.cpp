@@ -36,6 +36,8 @@ int main(int argc, char *argv[]){
     thread *palThread = new thread[chosenThreadCnt];
 
     while(CNTR < chosenLimit){
+        
+    cout << "Count: " << CNTR << endl;
 
     // Create a pool of threads.
     for(int i = 0; i < int(chosenThreadCnt); ++i)
@@ -45,6 +47,8 @@ int main(int argc, char *argv[]){
     // Join all the threads once all the calculations are complete.
     for(int j = 0; j < int(chosenThreadCnt); ++j)
         palThread[j].join();
+
+    
 
     }// end while()
 
@@ -67,7 +71,7 @@ unsigned long long getBlockNum(){
 
     // Prevent race condition
     lock_guard<mutex> guard(mutexVariable);
-
+    
     return CNTR;
 }
 
@@ -78,6 +82,7 @@ void calcPalindrome(int palCntArrIndex){
 
     CNTR += PAL_STEP;                               // Increment the count by 10,000. Each thread increments
                                                     // the counter after they receive their blockNum.
+
 
     unsigned long long num = 0, digit = 0, rev = 0;
 
@@ -100,7 +105,6 @@ void calcPalindrome(int palCntArrIndex){
             PAL_COUNT_ARRAY[palCntArrIndex]++;
     }
 }
-
 
 
 // Looks at the main arugments passed in and check them for validity.
