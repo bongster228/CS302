@@ -19,8 +19,8 @@ void calcPalindrome(int);           // Calculate palindrome and update the palin
 
 
 mutex mutexVariable;
-int *PAL_COUNT_ARRAY;       // Global dynamic array used to keep track of number of palindromes.
-unsigned long long CNTR = 0;
+int *PAL_COUNT_ARRAY = nullptr;       // Global dynamic array used to keep track of number of palindromes.
+unsigned long long CNTR = 1;
 
 int main(int argc, char *argv[]){
 
@@ -33,33 +33,56 @@ int main(int argc, char *argv[]){
     // Allocate array size corresponding to the number of threads being used.
     // Each thread uses one index to keep track of number of palindromes.
     PAL_COUNT_ARRAY = new int[chosenThreadCnt];
+    thread *palThread = new thread[chosenThreadCnt];
+
+    while(CNTR < chosenLimit){
+
+    // Create a pool of threads.
+    for(int i = 0; i < int(chosenThreadCnt); ++i)
+        palThread[i] = thread(calcPalindrome, i);
 
 
-    thread t1(calcPalindrome, 0);
-    thread t2(calcPalindrome, 1);
+    // Join all the threads once all the calculations are complete.
+    for(int j = 0; j < int(chosenThreadCnt); ++j)
+        palThread[j].join();
 
-    t1.join();
-    t2.join();
+    }// end while()
 
+    // Add up all the palindromes
+    int sum = 0;
+    for(int i = 0; i < int(chosenThreadCnt); ++i){
+        sum += PAL_COUNT_ARRAY[i];
+    }
 
-    cout << "Palindrome calculated by t1: " << PAL_COUNT_ARRAY[0] << endl;
-    cout << "Palindrome calculated by t2: " << PAL_COUNT_ARRAY[1] << endl;
+    cout << "total # of palindrome: " << sum << endl;
     
-    delete PAL_COUNT_ARRAY;
+    delete[] palThread;
+    delete[] PAL_COUNT_ARRAY;
 
     return 0;
 }
 
+// Give out numbers to the threads to check for palindromes. Use mutex to lock.
+unsigned long long getBlockNum(){
+
+    // Prevent race condition
+    lock_guard<mutex> guard(mutexVariable);
+
+    return CNTR;
+}
+
 void calcPalindrome(int palCntArrIndex){
-    unsigned long long palStepNum = getBlockNum();      // A block of 10,000 incremented number is assigned to
+
+    unsigned long long blockNum = getBlockNum();        // A block of 10,000 incremented number is assigned to
                                                         // check for palindromes.
 
-    cout << "palStepNum: " << palStepNum << endl;
+    CNTR += PAL_STEP;                               // Increment the count by 10,000. Each thread increments
+                                                    // the counter after they receive their blockNum.
 
     unsigned long long num = 0, digit = 0, rev = 0;
 
     // Check for palindromes in the block of numbers.
-    for(unsigned long long i = palStepNum; i < palStepNum + PAL_STEP; ++i){
+    for(unsigned long long i = blockNum; i < blockNum + PAL_STEP; ++i){
 
         num = i;
         rev = 0;
@@ -78,15 +101,7 @@ void calcPalindrome(int palCntArrIndex){
     }
 }
 
-// Give out numbers to the threads to check for palindromes. Use mutex to lock.
-unsigned long long getBlockNum(){
 
-    // Prevent race condition
-    lock_guard<mutex> guard(mutexVariable);
-    if(CNTR == 0) return 0;
-
-    return CNTR += PAL_STEP;            // Return increment value to thread functions to calculate palindromes.
-}
 
 // Looks at the main arugments passed in and check them for validity.
 bool getArguments(int argc, char *argv[], unsigned long long &threadCnt, unsigned long long &limitVal){
