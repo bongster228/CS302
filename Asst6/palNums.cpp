@@ -78,7 +78,7 @@ void calcPalindrome(int palCntArrIndex){
     }
 }
 
-// Give out numbers to the threads to check for palindromes.
+// Give out numbers to the threads to check for palindromes. Use mutex to lock.
 unsigned long long getBlockNum(){
 
     // Prevent race condition
