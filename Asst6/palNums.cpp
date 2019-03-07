@@ -33,32 +33,49 @@ int main(int argc, char *argv[]){
     // Allocate array size corresponding to the number of threads being used.
     // Each thread uses one index to keep track of number of palindromes.
     PAL_COUNT_ARRAY = new int[chosenThreadCnt];
+    for(unsigned int i = 0; i < chosenThreadCnt; i++)        // Initialize dynamic array.
+        PAL_COUNT_ARRAY[i] = 0;
+
+    // Create a dynamic array of threads.
     thread *palThread = new thread[chosenThreadCnt];
+
+
+    
+
+    auto t1 = chrono::high_resolution_clock::now();
 
     while(CNTR < chosenLimit){
         
-    cout << "Count: " << CNTR << endl;
-
     // Create a pool of threads.
-    for(int i = 0; i < int(chosenThreadCnt); ++i)
+    for(unsigned int i = 0; i < chosenThreadCnt; ++i)
         palThread[i] = thread(calcPalindrome, i);
 
 
     // Join all the threads once all the calculations are complete.
-    for(int j = 0; j < int(chosenThreadCnt); ++j)
+    for(unsigned int j = 0; j < chosenThreadCnt; ++j)
         palThread[j].join();
 
     
 
     }// end while()
 
+    auto t2 = chrono::high_resolution_clock::now();
+
     // Add up all the palindromes
     int sum = 0;
-    for(int i = 0; i < int(chosenThreadCnt); ++i){
+    for(unsigned int i = 0; i < chosenThreadCnt; ++i){
         sum += PAL_COUNT_ARRAY[i];
     }
 
+    unsigned long hwthd = thread::hardware_concurrency();
+
+
+
+    cout << "Program took: " << chrono::duration_cast<chrono::milliseconds>(t2 - t1).count() << " miliseconds" << endl;
+    cout << "Thread Count: " << chosenThreadCnt << endl;
+    cout << "Hardware Cores: " << hwthd << endl;
     cout << "total # of palindrome: " << sum << endl;
+
     
     delete[] palThread;
     delete[] PAL_COUNT_ARRAY;
