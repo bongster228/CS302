@@ -40,13 +40,11 @@ int main(int argc, char *argv[]){
     thread *palThread = new thread[chosenThreadCnt];
 
 
-    
-
     auto t1 = chrono::high_resolution_clock::now();
 
     while(CNTR < chosenLimit){
-        
-    // Create a pool of threads.
+    
+    // Create a pool of threads and assing tasks.
     for(unsigned int i = 0; i < chosenThreadCnt; ++i)
         palThread[i] = thread(calcPalindrome, i);
 
@@ -54,10 +52,14 @@ int main(int argc, char *argv[]){
     // Join all the threads once all the calculations are complete.
     for(unsigned int j = 0; j < chosenThreadCnt; ++j)
         palThread[j].join();
-
-    
+        
 
     }// end while()
+
+
+
+
+
 
     auto t2 = chrono::high_resolution_clock::now();
 
@@ -96,7 +98,7 @@ void calcPalindrome(int palCntArrIndex){
 
     unsigned long long blockNum = getBlockNum();        // A block of 10,000 incremented number is assigned to
                                                         // check for palindromes.
-
+    
     CNTR += PAL_STEP;                               // Increment the count by 10,000. Each thread increments
                                                     // the counter after they receive their blockNum.
 
