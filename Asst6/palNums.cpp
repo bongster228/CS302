@@ -15,7 +15,9 @@ static unsigned long long PAL_STEP = 10000;
 bool getArguments(int, char*[], unsigned long long&, unsigned long long&);
 unsigned long long getBlockNum();   // Have the counter in here. Lock it with mutex.
 void calcPalindrome(int, unsigned long long);           // Calculate palindrome and update the palindrome index.
-                                    // The passed in parameter is the array index the thread function will update.
+                                                        // The passed in parameter is the array index the thread function will update.
+int calcPercent(unsigned long long);
+int sumUpPalindrome(int);
 
 
 mutex mutexVariable;
@@ -42,7 +44,7 @@ int main(int argc, char *argv[]){
     // Create a dynamic array of threads.
     thread *palThread = new thread[chosenThreadCnt];
 
-
+    // Start clock.
     auto t1 = chrono::high_resolution_clock::now();
 
 
@@ -55,23 +57,25 @@ int main(int argc, char *argv[]){
         palThread[j].join();
 
 
+    // End clock.
     auto t2 = chrono::high_resolution_clock::now();
 
 
-    // Add up all the palindromes.
-    int sum = 0;
-    for(unsigned int i = 0; i < chosenThreadCnt; ++i){
-        sum += PAL_COUNT_ARRAY[i];
-    }
+
+
 
     unsigned long hwthd = thread::hardware_concurrency();
+    
+    int numOfPalindrome = sumUpPalindrome(threadCnt);
 
-
-
-    cout << "Program took: " << chrono::duration_cast<chrono::milliseconds>(t2 - t1).count() << " miliseconds" << endl;
-    cout << "Thread Count: " << chosenThreadCnt << endl;
     cout << "Hardware Cores: " << hwthd << endl;
-    cout << "total # of palindrome: " << sum << endl;
+    cout << "Thread Count: " << threadCnt << endl;
+    cout << "Numbers Limit: " << limit << endl;
+    cout << "Results: \n    Count of palindromic numbers between 1 and " << limit << " is " << numOfPalindrome << endl;
+    cout << "   Percentage of palindromic numbers: " << (numOfPalindrome/limit)*100 << "%" << endl;
+    cout << "Threads took: " << chrono::duration_cast<chrono::milliseconds>(time2 - time1).count() << " miliseconds" << endl;
+
+
 
     
     delete[] palThread;
@@ -80,12 +84,24 @@ int main(int argc, char *argv[]){
     return 0;
 }
 
+int sumUpPalindrome(int threadCnt){
+
+    // Add up all the palindromes.
+    int sum = 0;
+    for(unsigned int i = 0; i < threadCnt; ++i){
+        sum += PAL_COUNT_ARRAY[i];
+    } // end for()
+
+    return sum;
+}
+
+
 // Give out numbers to the threads to check for palindromes. Use mutex to lock.
 unsigned long long getBlockNum(){
 
     // Prevent race condition
     lock_guard<mutex> guard(mutexVariable);
-    
+
     unsigned long long blockNum = CNTR;
     CNTR += PAL_STEP;                                  // Increment the count by 10,000. Each thread increments
                                                        // the counter after they receive their blockNum.
