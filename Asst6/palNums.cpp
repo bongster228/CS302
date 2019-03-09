@@ -14,7 +14,7 @@ static unsigned long long PAL_STEP = 10000;
 
 bool getArguments(int, char*[], unsigned long long&, unsigned long long&);
 unsigned long long getBlockNum();   // Have the counter in here. Lock it with mutex.
-void calcPalindrome(int);           // Calculate palindrome and update the palindrome index.
+void calcPalindrome(int, unsigned long long);           // Calculate palindrome and update the palindrome index.
                                     // The passed in parameter is the array index the thread function will update.
 
 
@@ -27,8 +27,10 @@ int main(int argc, char *argv[]){
     unsigned long long chosenThreadCnt = 0;
     unsigned long long chosenLimit = 0;
 
+    // Check for command line arguments.
     if(!getArguments(argc, argv, chosenThreadCnt, chosenLimit))
         exit(1);
+
 
     // Allocate array size corresponding to the number of threads being used.
     // Each thread uses one index to keep track of number of palindromes.
@@ -36,34 +38,27 @@ int main(int argc, char *argv[]){
     for(unsigned int i = 0; i < chosenThreadCnt; i++)        // Initialize dynamic array.
         PAL_COUNT_ARRAY[i] = 0;
 
+
     // Create a dynamic array of threads.
     thread *palThread = new thread[chosenThreadCnt];
 
 
     auto t1 = chrono::high_resolution_clock::now();
 
-    while(CNTR < chosenLimit){
-    
-    // Create a pool of threads and assing tasks.
-    for(unsigned int i = 0; i < chosenThreadCnt; ++i)
-        palThread[i] = thread(calcPalindrome, i);
 
+    // Assign task to each thread based on thread count.
+    for(unsigned int i = 0; i < chosenThreadCnt; ++i)
+        palThread[i] = thread(calcPalindrome, i, chosenLimit);
 
     // Join all the threads once all the calculations are complete.
     for(unsigned int j = 0; j < chosenThreadCnt; ++j)
         palThread[j].join();
-        
-
-    }// end while()
-
-
-
-
 
 
     auto t2 = chrono::high_resolution_clock::now();
 
-    // Add up all the palindromes
+
+    // Add up all the palindromes.
     int sum = 0;
     for(unsigned int i = 0; i < chosenThreadCnt; ++i){
         sum += PAL_COUNT_ARRAY[i];
@@ -91,16 +86,20 @@ unsigned long long getBlockNum(){
     // Prevent race condition
     lock_guard<mutex> guard(mutexVariable);
     
+    CNTR += PAL_STEP;                                  // Increment the count by 10,000. Each thread increments
+                                                       // the counter after they receive their blockNum.
+
     return CNTR;
 }
 
-void calcPalindrome(int palCntArrIndex){
+void calcPalindrome(int palCntArrIndex, unsigned long long limit){
+
+    while(CNTR < limit){        // Keep looping through the function until the limit is reached.
+                                // Each time the loop completes, a thread is given a new block of
+                                // numbers and increments the counter by PAL_STEP.
 
     unsigned long long blockNum = getBlockNum();        // A block of 10,000 incremented number is assigned to
                                                         // check for palindromes.
-    
-    CNTR += PAL_STEP;                               // Increment the count by 10,000. Each thread increments
-                                                    // the counter after they receive their blockNum.
 
 
     unsigned long long num = 0, digit = 0, rev = 0;
@@ -123,6 +122,8 @@ void calcPalindrome(int palCntArrIndex){
         if(i == rev)
             PAL_COUNT_ARRAY[palCntArrIndex]++;
     }
+
+    } // end while()
 }
 
 
