@@ -86,10 +86,11 @@ unsigned long long getBlockNum(){
     // Prevent race condition
     lock_guard<mutex> guard(mutexVariable);
     
+    unsigned long long blockNum = CNTR;
     CNTR += PAL_STEP;                                  // Increment the count by 10,000. Each thread increments
                                                        // the counter after they receive their blockNum.
 
-    return CNTR;
+    return blockNum;
 }
 
 void calcPalindrome(int palCntArrIndex, unsigned long long limit){
