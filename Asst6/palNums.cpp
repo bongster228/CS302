@@ -4,6 +4,7 @@
 #include <thread>
 #include <string>
 #include <string.h>
+#include <iomanip>
 using namespace std;
 
 static unsigned long long MIN_THREAD_COUNT = 1;
@@ -13,16 +14,21 @@ static unsigned long long MAX_LIMIT = 100000000000;
 static unsigned long long PAL_STEP = 10000;
 
 bool getArguments(int, char*[], unsigned long long&, unsigned long long&);
-unsigned long long getBlockNum();   // Have the counter in here. Lock it with mutex.
+unsigned long long getBlockNum();                       // Have the counter in here. Lock it with mutex.
 void calcPalindrome(int, unsigned long long);           // Calculate palindrome and update the palindrome index.
                                                         // The passed in parameter is the array index the thread function will update.
-int calcPercent(unsigned long long);
 int sumUpPalindrome(int);
 
+
+//------------------------------------------------------------------------------------------------------------------------------
+//Global Variables
 
 mutex mutexVariable;
 int *PAL_COUNT_ARRAY = nullptr;       // Global dynamic array used to keep track of number of palindromes.
 unsigned long long CNTR = 1;
+
+//------------------------------------------------------------------------------------------------------------------------------
+
 
 int main(int argc, char *argv[]){
 
@@ -61,40 +67,42 @@ int main(int argc, char *argv[]){
     auto t2 = chrono::high_resolution_clock::now();
 
 
-
-
-
     unsigned long hwthd = thread::hardware_concurrency();
-    
-    int numOfPalindrome = sumUpPalindrome(threadCnt);
 
+    int numOfPalindrome = sumUpPalindrome(chosenThreadCnt);
+
+
+//------------------------------------------------------------------------------------------------------------------------------
+//Ouput Results
     cout << "Hardware Cores: " << hwthd << endl;
-    cout << "Thread Count: " << threadCnt << endl;
-    cout << "Numbers Limit: " << limit << endl;
-    cout << "Results: \n    Count of palindromic numbers between 1 and " << limit << " is " << numOfPalindrome << endl;
-    cout << "   Percentage of palindromic numbers: " << (numOfPalindrome/limit)*100 << "%" << endl;
-    cout << "Threads took: " << chrono::duration_cast<chrono::milliseconds>(time2 - time1).count() << " miliseconds" << endl;
+    cout << "Thread Count: " << chosenThreadCnt << endl;
+    cout << "Numbers Limit: " << chosenLimit << endl << endl;
+    cout << "Results: \n   Count of palindromic numbers between 1 and " << chosenLimit << " is " << numOfPalindrome << endl;
+    cout << fixed << setprecision(6) << "   Percentage of palindromic numbers: " << (static_cast<double>(numOfPalindrome)/chosenLimit) << "%" << endl << endl;
+    cout << "Threads took: " << chrono::duration_cast<chrono::milliseconds>(t2 - t1).count() << " miliseconds" << endl;
+//-------------------------------------------------------------------------------------------------------------------------------
 
 
-
-    
     delete[] palThread;
     delete[] PAL_COUNT_ARRAY;
 
     return 0;
 }
 
+//------------------------------------------------------------------------------------------------------------------------------
+
 int sumUpPalindrome(int threadCnt){
 
     // Add up all the palindromes.
     int sum = 0;
-    for(unsigned int i = 0; i < threadCnt; ++i){
+    for(int i = 0; i < threadCnt; ++i){
         sum += PAL_COUNT_ARRAY[i];
     } // end for()
 
     return sum;
 }
 
+//------------------------------------------------------------------------------------------------------------------------------
 
 // Give out numbers to the threads to check for palindromes. Use mutex to lock.
 unsigned long long getBlockNum(){
@@ -108,6 +116,8 @@ unsigned long long getBlockNum(){
 
     return blockNum;
 }
+
+//------------------------------------------------------------------------------------------------------------------------------
 
 void calcPalindrome(int palCntArrIndex, unsigned long long limit){
 
@@ -143,6 +153,7 @@ void calcPalindrome(int palCntArrIndex, unsigned long long limit){
     } // end while()
 }
 
+//------------------------------------------------------------------------------------------------------------------------------
 
 // Looks at the main arugments passed in and check them for validity.
 bool getArguments(int argc, char *argv[], unsigned long long &threadCnt, unsigned long long &limitVal){
