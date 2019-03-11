@@ -78,7 +78,7 @@ int main(int argc, char *argv[]){
     cout << "Thread Count: " << chosenThreadCnt << endl;
     cout << "Numbers Limit: " << chosenLimit << endl << endl;
     cout << "Results: \n   Count of palindromic numbers between 1 and " << chosenLimit << " is " << numOfPalindrome << endl;
-    cout << fixed << setprecision(6) << "   Percentage of palindromic numbers: " << (static_cast<double>(numOfPalindrome)/chosenLimit) << "%" << endl << endl;
+    cout << fixed << setprecision(6) << "   Percentage of palindromic numbers: " << (static_cast<double>(numOfPalindrome)/chosenLimit) * 100 << "%" << endl << endl;
     cout << "Threads took: " << chrono::duration_cast<chrono::milliseconds>(t2 - t1).count() << " miliseconds" << endl;
 //-------------------------------------------------------------------------------------------------------------------------------
 
@@ -125,15 +125,17 @@ void calcPalindrome(int palCntArrIndex, unsigned long long limit){
                                 // Each time the loop completes, a thread is given a new block of
                                 // numbers and increments the counter by PAL_STEP.
 
+    
     unsigned long long blockNum = getBlockNum();        // A block of 10,000 incremented number is assigned to
                                                         // check for palindromes.
-
 
     unsigned long long num = 0, digit = 0, rev = 0;
 
     // Check for palindromes in the block of numbers.
     for(unsigned long long i = blockNum; i < blockNum + PAL_STEP; ++i){
 
+        if(i > limit)   break;                     // Calculate palindromes only up to the limit chosen by the user.
+        
         num = i;
         rev = 0;
 
