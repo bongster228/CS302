@@ -5,8 +5,7 @@ all: palNums
 
 palNums: $(OBJ)
 	$(CC) $(OBJ) -o palNums
-	cp palNums test/
-
+	
 palNums.o: palNums.cpp
 	$(CC) -c palNums.cpp
 
