@@ -1,0 +1,106 @@
+#!/bin/bash
+# CS 302, assignment #7 test script.
+
+# ---------------------------------------------------------
+# Initial checks.
+#	Ensure executable file exists.
+
+if [ -z $1 ]; then
+	echo "Error, must provide executable file name."
+	exit
+fi
+
+if [ ! -e $1 ] || [ ! -x $1 ]; then
+	echo "Error, unable to find $1 executable file."
+	exit
+fi
+
+# ---------------------------------------------------------
+# Define script variables and function
+
+bolded=`tput bold`
+normal=`tput sgr0`
+
+pause() {
+	if [ "$1" = "skip" ]; then
+		echo
+	else
+		echo
+		echo -n "Press return to continue"
+		read
+		clear
+	fi
+}
+
+# ---------------------------------------------------------
+# Display initial page
+
+clear
+echo
+echo
+echo ${bolded}Assignment 7 - Testing Utility${normal}
+echo
+echo
+echo
+echo
+echo "Note, this utility assumes the program is working or very"
+echo "      close to working.  Testing on an incomplete"
+echo "      program will not be useful."
+echo
+echo
+echo
+pause $2
+
+# ---------------------------------------------------------
+# Begin tests.
+
+echo
+echo "**********************************************************************"
+echo
+echo "Execution Testing (may take a while)..."
+echo
+
+declare -a arr1=(words0.txt words1.txt words2.txt words3.txt words4.txt words5.txt words6.txt words7.txt)
+
+cnt=1
+for i in "${arr1[@]}";
+do
+	echo
+
+	echo "./$1 -i "$i" -p > out_"$i""
+	./$1 -i "$i" -p > out_"$i"
+
+	if `diff out_"$i" mstr_"$i" >/dev/null` ; then
+		echo "Output File Test Successful, file: "$i" "
+	else
+		diff out_"$i" mstr_"$i"
+	fi
+
+done
+
+#
+# -----
+#  Final test with valgrind
+#
+echo -e "\n**********************************************************************"
+echo "Final test - check for memory leaks."
+echo
+echo "   Should show: \"All heap blocks were freed -- no leaks are possible\""
+echo "   And no other errors."
+echo
+pause $2
+#
+echo "Final Test:"
+echo
+echo "valgrind ./$1 -i words6.txt -p > out_words6.txt"
+valgrind ./$1 -i words6.txt -p > out_words6.txt
+
+if `diff out_words6.txt mstr_words6.txt >/dev/null` ; then
+	echo "Final Test Done"
+else
+	diff out_words6.txt mstr_words6.txt
+fi
+
+echo
+echo
+

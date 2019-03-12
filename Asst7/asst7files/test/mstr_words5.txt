@@ -1,0 +1,22 @@
+[1m------------------------------------------------------------
+CS 302 - Assignment #7[0m
+
+[1m[32mDocument Information:
+---------------------[0m
+Document File Name: words5.txt
+
+Total Word Count: 262140
+Unique Word Count: 2
+Hash Stats
+   Current Hash Size: 9973
+   Hash Resize Operations: 0
+   Hash Collisions: 0
+
+Most Frequent Word is: 'number' occurring 131070 times.
+
+Word Counts: 
+number  131070  
+line  131070  
+
+------------------------------------------------------------
+Game Over, thank you for playing.
