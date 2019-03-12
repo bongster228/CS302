@@ -121,6 +121,7 @@ unsigned long long getBlockNum(){
 
 void calcPalindrome(int palCntArrIndex, unsigned long long limit){
 
+
     while(CNTR < limit){        // Keep looping through the function until the limit is reached.
                                 // Each time the loop completes, a thread is given a new block of
                                 // numbers and increments the counter by PAL_STEP.

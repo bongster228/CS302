@@ -5,3 +5,83 @@ Executions for Palindromic Numbers program.
 
 Executions for Palindromic Numbers Program to 10000000000, 1 threads.
 
+Hardware Cores: 32
+Thread Count: 1
+Numbers Limit: 10000000000
+
+Results: 
+   Count of palindromic numbers between 1 and 10000000000 is 199998
+   Percentage of palindromic numbers: 0.002000%
+
+Threads took: 1060941 miliseconds
+
+**********************************************************************
+
+Executions for Palindromic Numbers Program to 10000000000, 2 threads.
+
+Hardware Cores: 32
+Thread Count: 2
+Numbers Limit: 10000000000
+
+Results: 
+   Count of palindromic numbers between 1 and 10000000000 is 199998
+   Percentage of palindromic numbers: 0.002000%
+
+Threads took: 568792 miliseconds
+
+**********************************************************************
+
+Executions for Palindromic Numbers Program to 10000000000, 4 threads.
+
+Hardware Cores: 32
+Thread Count: 4
+Numbers Limit: 10000000000
+
+Results: 
+   Count of palindromic numbers between 1 and 10000000000 is 199998
+   Percentage of palindromic numbers: 0.002000%
+
+Threads took: 276059 miliseconds
+
+**********************************************************************
+
+Executions for Palindromic Numbers Program to 10000000000, 8 threads.
+
+Hardware Cores: 32
+Thread Count: 8
+Numbers Limit: 10000000000
+
+Results: 
+   Count of palindromic numbers between 1 and 10000000000 is 199998
+   Percentage of palindromic numbers: 0.002000%
+
+Threads took: 144114 miliseconds
+
+**********************************************************************
+
+Executions for Palindromic Numbers Program to 10000000000, 16 threads.
+
+Hardware Cores: 32
+Thread Count: 16
+Numbers Limit: 10000000000
+
+Results: 
+   Count of palindromic numbers between 1 and 10000000000 is 199998
+   Percentage of palindromic numbers: 0.002000%
+
+Threads took: 83902 miliseconds
+
+**********************************************************************
+
+Executions for Palindromic Numbers Program to 10000000000, 32 threads.
+
+Hardware Cores: 32
+Thread Count: 32
+Numbers Limit: 10000000000
+
+Results: 
+   Count of palindromic numbers between 1 and 10000000000 is 199998
+   Percentage of palindromic numbers: 0.002000%
+
+Threads took: 45341 miliseconds
+
