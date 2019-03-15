@@ -48,13 +48,13 @@ public:
 
     unsigned int getUniqueWordCount() const;
     
-    unsigned int getWordCount() const;
+    unsigned int getWordCount(std::string) const;
 
     bool incCount(std::string);                                 // Search the hash table for the passed string and, if found, 
                                                                 // increment the word count associated with that string and return
                                                                 // true. If the passed string is not found, then return false.
    
-    void getMaxNode (unsigned int&, std::string&) const;             // Search for the word string associated with the largest count and
+    void getMaxNode (unsigned int&, std::string&) const;        // Search for the word string associated with the largest count and
                                                                 // return, via ref, the word string and count.
    
     void printHash() const;                                     // Print all non-empty entries in the hash table.

@@ -69,6 +69,12 @@ void wordHash::insert(string word){
 
 void wordHash::insert(string word, unsigned int count){
 
+    // Check for rehashing condition.
+    double currLoadFactor = static_cast<double>(uniqueWordCount) / static_cast<double>(hashSize);
+    if(currLoadFactor > loadFactor) rehash();
+
+    cout << "Load Factor: " << currLoadFactor << endl;
+
     // Hash the word.
     unsigned int hashIndex = hash(word) % hashSize;
 
@@ -157,28 +163,37 @@ void wordHash::rehash(){
     3840037, 7680103, 30720299, 15360161, 61440629
     };
 
+
     // Store the memory location of previous array and create a new bigger array.
     string *prvWordList = wordList;
     unsigned int *prvWordCounts = wordCounts;
 
+
     wordList = new string[hashSizes[reSizeCount]];
     wordCounts = new unsigned int[hashSizes[reSizeCount]];
 
+
     // Initialize new hash table.
-    for(int i = 0; i < hashSizes[reSizeCount]; ++i)
+    for(unsigned int i = 0; i < hashSizes[reSizeCount]; ++i)
         wordList[i] = "";
 
-    // Extract all entries from the old hash table and insert them into new table.
-    
 
+    // Extract all entries from the old hash table and insert them into new table.
+    for(unsigned int i = 0; i < hashSize; ++i){
+        if(prvWordList[i] != "")
+            insert(prvWordList[i], prvWordCounts[i]);
+    }
+
+    // Update to new hash table size.
+    hashSize = hashSizes[reSizeCount];
+
+    delete[] prvWordList;
+    delete[] prvWordCounts;
 }
 
 //----------------------------------------------------------------------------------
 
 void wordHash::printHash() const{
-
-    cout << "Collision Count: " << collisionCount << endl;
-    cout << "Unique Word Count: " << uniqueWordCount << endl;
 
     for(unsigned int i = 0; i < hashSize; ++i){
         if(wordList[i] != "")
@@ -188,5 +203,51 @@ void wordHash::printHash() const{
 
 //----------------------------------------------------------------------------------
 
+unsigned int wordHash::getUniqueWordCount() const{
+    return uniqueWordCount;
+}
+
+//----------------------------------------------------------------------------------
+
+unsigned int wordHash::getWordCount(string word) const{
+
+    unsigned int hashIndex = hash(word) % hashSize;
+
+    // Used for probing for checking in case of collision.
+    unsigned int probeIndex = hashIndex;
+    int probeCntr = 0;
+
+    while(wordList[probeIndex] != ""){
+
+        // Return the count if a match is found.
+        if(wordList[probeIndex] == word){
+            return wordCounts[probeIndex];
+        }
+
+        probeCntr++;
+        probeIndex = next(hashIndex, probeCntr);
+    }
+
+    // Word is not found in the hash table.
+    return 0;
+}
+
+//----------------------------------------------------------------------------------
+
+void wordHash::getMaxNode(unsigned int &count, string &word) const{
+
+    unsigned int maxNodeIndex = 0;
+
+    // Look through every element in the wordCounts and find the
+    // index value of the greatest word count.
+    for(int i = 0; i < hashSize; ++i){
+        if(wordCounts[maxNodeIndex] < wordCounts[i])
+            maxNodeIndex = i;
+    }
+
+    // Return the values via reference.
+    word = wordList[maxNodeIndex];
+    count = wordCounts[maxNodeIndex];
+}
 
 //----------------------------------------------------------------------------------

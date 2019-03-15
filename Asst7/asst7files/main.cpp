@@ -12,6 +12,7 @@ int main(){
     hash.insert("hello");
     hash.insert("byye");
 
+    cout << "How many Hello: " << hash.getWordCount("hello") << endl;
     hash.printHash();
 
     return 0;
