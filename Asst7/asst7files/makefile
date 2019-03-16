@@ -1,19 +1,24 @@
-OBJ = wordHash.o main.o
-DEPS = wordHash.h
+OBJ1 = wordHash.o
+OBJ2 = wordCount.o concordance.o
+DEPS = wordHash.h wordCount.h
 CC = g++ -Wall -pedantic -Wextra -std=c++11 -g
 
-all: hash
+all: concordance
 
-hash: $(OBJ) $(DEPS)
-	$(CC) $(OBJ) -o hash
-	cp hash test/
-
-main.o: main.cpp $(DEPS)
-	$(CC) -c main.cpp
+concordance: $(OBJ1) $(OBJ2) $(DEPS)
+	$(CC) $(OBJ1) $(OBJ2) -o concordance
+	cp concordance test/
 
 wordHash.o: wordHash.cpp $(DEPS)
 	$(CC) -c wordHash.cpp
 
+wordCount.o: wordCount.cpp $(DEPS)
+	$(CC) -c wordCount.cpp
+
+concordance.o: concordance.cpp $(DEPS)
+	$(CC) -c concordance.cpp
+
+
 .PHONY: clean
 clean:
-	-rm $(OBJ)
+	-rm $(OBJ1) $(OBJ2)

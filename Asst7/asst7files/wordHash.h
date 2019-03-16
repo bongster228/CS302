@@ -2,7 +2,40 @@
 
 class wordHash {
 
+
+public:
+
+
+    wordHash();
+    ~wordHash();
+
+    void insert(std::string);                                   // Increment the word count if the item is
+                                                                // already in the table and if not, use the private
+                                                                // function to insert the word into the table.
+
+    unsigned int getUniqueWordCount() const;                    // Returns the number of unique words in the hash table.
+    
+    unsigned int getWordCount(std::string) const;               // Looks for the passed in word in the hash table and returns the
+                                                                // count of that word.
+
+    bool incCount(std::string);                                 // Search the hash table for the passed string and, if found, 
+                                                                // increment the word count associated with that string and return
+                                                                // true. If the passed string is not found, then return false.
+   
+    void getMaxNode (unsigned int&, std::string&) const;        // Search for the word string associated with the largest count and
+                                                                // return, via ref, the word string and count.
+   
+    void printHash() const;                                     // Print all non-empty entries in the hash table.
+
+    void showHashStats() const;                                 // Print the current hash size, hash table resize count,
+                                                                // and collision count.
+
+    
+
+
 private:
+
+
     unsigned int hashSize;
     unsigned int reSizeCount;
     unsigned int collisionCount;
@@ -13,7 +46,7 @@ private:
     unsigned int *wordCounts;
 
     static constexpr double loadFactor = 0.65;
-    static constexpr int initialHashSize = 30011;
+    static constexpr int initialHashSize = 9973;
 
     void insert(std::string, unsigned int);                     // Insert the passed item into the hash table. If the hash
                                                                 // table entries exceeds the load factor (count/tableSize),
@@ -39,28 +72,6 @@ private:
                                                                 // should be placed with the private insert() into the new hash table.
                                                                 // If the resize value exceeds, display error message.
 
-public:
-    wordHash();
-    ~wordHash();
-    void insert(std::string);                                   // Increment the word count if the item is
-                                                                // already in the table and if not, use the private
-                                                                // function to insert the word into the table.
-
-    unsigned int getUniqueWordCount() const;
-    
-    unsigned int getWordCount(std::string) const;
-
-    bool incCount(std::string);                                 // Search the hash table for the passed string and, if found, 
-                                                                // increment the word count associated with that string and return
-                                                                // true. If the passed string is not found, then return false.
-   
-    void getMaxNode (unsigned int&, std::string&) const;        // Search for the word string associated with the largest count and
-                                                                // return, via ref, the word string and count.
-   
-    void printHash() const;                                     // Print all non-empty entries in the hash table.
-
-    void showHashStats() const;                                 // Print the current hash size, hash table resize count,
-                                                                // and collision count.
 
 
 };
