@@ -40,12 +40,12 @@ void wordHash::insert(string word){
 
 
     // Insert if the word is not in the hash table. 
-    // Just return if the word is already in the hash table.
     if(!incCount(word)){
-        uniqueWordCount++;      // Insert only occurs when the word is not a duplicate.
-        insert(word, 1);
+        uniqueWordCount++;      
+        insert(word, 1);            // Insert only occurs when the word is not a duplicate.
     }
-    
+
+    // Just return if the word is already in the hash table.
     return;
 }
 
@@ -135,7 +135,7 @@ void wordHash::printHash() const{
 
     for(unsigned int i = 0; i < hashSize; ++i){
         if(wordList[i] != "")
-            cout << wordList[i] << " " << wordCounts[i] << endl;
+            cout << wordList[i] << "  " << wordCounts[i] << "  " << endl;
     }
 }
 
@@ -192,6 +192,8 @@ void wordHash::insert(string word, unsigned int count){
 
 unsigned int wordHash::hash(string word) const{
     
+
+    
     unsigned int hash = 0;
 
     for(unsigned int i = 0; i < word.length(); ++i){
@@ -203,6 +205,7 @@ unsigned int wordHash::hash(string word) const{
     hash ^= (hash >> 11);
     hash += (hash << 15);
 
+
     return hash;
 }
 
@@ -212,11 +215,10 @@ unsigned int wordHash::hash(string word) const{
 // so that the function can be called multiple times so that it can probe further.
 unsigned int wordHash::next(unsigned int position, unsigned int counter) const{
     
-    unsigned int newHash = 0;
 
-    newHash = (position + (counter * counter)) % hashSize;
+    
 
-    return newHash;
+    return (position + (counter * counter)) % hashSize;
 }
 
 //----------------------------------------------------------------------------------

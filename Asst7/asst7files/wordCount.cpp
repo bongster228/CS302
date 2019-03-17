@@ -75,7 +75,6 @@ bool wordCount::readDocument(const string docName){
         totalWordCount++;
     }
 
-    
 
     } // end while()
 
@@ -153,6 +152,8 @@ void wordCount::getMaxWord(unsigned int &count, string &word){
 //--------------------------------------------------------------------------
 
 void wordCount::printWordCounts() const{
+
+    cout << endl << "Word Counts: " << endl;
 
     printHash();
 
