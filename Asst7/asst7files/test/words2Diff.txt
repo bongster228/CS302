@@ -1,0 +1,293 @@
+9c9
+< Unique Word Count: 8607
+---
+> Unique Word Count: 8685
+13c13
+<    Hash Collisions: 1592
+---
+>    Hash Collisions: 2060
+104c104
+< congresses  2  
+---
+> congresses  1  
+110a111
+> congresses  1  
+134c135
+< subjecting  8  
+---
+> subjecting  1  
+135a137
+> subjecting  1  
+138a141
+> subjecting  1  
+146a150
+> subjecting  1  
+153a158
+> subjecting  1  
+178a184
+> subjecting  1  
+186a193
+> subjecting  1  
+189a197
+> subjecting  1  
+1122c1130
+< square  2  
+---
+> square  1  
+1125a1134
+> square  1  
+1337c1346
+< culpable  4  
+---
+> culpable  1  
+1342a1352
+> culpable  1  
+1347a1358
+> culpable  2  
+1425c1436
+< agitate  3  
+---
+> agitate  1  
+1433c1444,1445
+< accomplices  3  
+---
+> agitate  1  
+> accomplices  1  
+1436a1449,1450
+> accomplices  1  
+> agitate  1  
+1437a1452
+> accomplices  1  
+1556c1571
+< topic  4  
+---
+> topic  1  
+1558a1574
+> topic  1  
+1571a1588
+> topic  1  
+1576a1594
+> topic  1  
+1947c1965
+< severity  4  
+---
+> severity  1  
+1953c1971
+< performed  6  
+---
+> performed  1  
+1954a1973,1974
+> severity  1  
+> performed  1  
+1956a1977,1978
+> severity  1  
+> performed  1  
+1960a1983
+> performed  1  
+1964a1988
+> performed  2  
+1979a2004
+> severity  1  
+2811c2836
+< sec  2  
+---
+> sec  1  
+2813a2839
+> sec  1  
+3407c3433
+< ordinance  2  
+---
+> ordinance  1  
+3408a3435
+> ordinance  1  
+3969c3996
+< seasons  5  
+---
+> seasons  1  
+3972a4000
+> seasons  1  
+3973a4002
+> seasons  1  
+3976a4006
+> seasons  1  
+3980a4011
+> seasons  1  
+4054c4085
+< counterfeit  2  
+---
+> counterfeit  1  
+4057a4089
+> counterfeit  1  
+4242c4274,4275
+< prevails  7  
+---
+> prevails  1  
+> prevails  1  
+4243a4277
+> prevails  1  
+4246a4281,4282
+> prevails  1  
+> prevails  3  
+4504c4540
+< mischievous  4  
+---
+> mischievous  1  
+4507c4543
+< attribute  1  
+---
+> mischievous  1  
+4509a4546
+> attribute  1  
+4510a4548
+> mischievous  1  
+4515a4554
+> mischievous  1  
+4664c4703
+< similitude  3  
+---
+> similitude  1  
+4666a4706
+> similitude  1  
+4669a4710
+> similitude  1  
+4903c4944
+< junius  2  
+---
+> junius  1  
+4906a4948
+> junius  1  
+5084c5126
+< dilatoriness  2  
+---
+> dilatoriness  1  
+5086a5129
+> dilatoriness  1  
+5166c5209
+< conceit  2  
+---
+> conceit  1  
+5170a5214
+> conceit  1  
+5566c5610
+< reluctance  4  
+---
+> reluctance  1  
+5570c5614
+< denomination  5  
+---
+> reluctance  1  
+5572a5617
+> denomination  1  
+5574a5620
+> denomination  1  
+5577a5624
+> denomination  3  
+5583a5631
+> reluctance  1  
+5588a5637
+> reluctance  1  
+5736c5785
+< rigid  5  
+---
+> rigid  1  
+5738a5788
+> rigid  1  
+5739a5790,5791
+> rigid  1  
+> rigid  1  
+5741a5794
+> rigid  1  
+5974c6027
+< conveniency  2  
+---
+> conveniency  1  
+5975a6029
+> conveniency  1  
+6002c6056,6057
+< substantially  6  
+---
+> substantially  1  
+> substantially  1  
+6004a6060
+> substantially  1  
+6011a6068
+> substantially  3  
+6041c6098
+< keeps  2  
+---
+> keeps  1  
+6043a6101
+> keeps  1  
+6490c6548
+< divisibility  2  
+---
+> divisibility  1  
+6492c6550
+< technical  6  
+---
+> technical  1  
+6493a6552
+> divisibility  1  
+6502a6562
+> technical  1  
+6504a6565
+> technical  1  
+6505a6567
+> technical  3  
+6643c6705,6706
+< possessor  2  
+---
+> possessor  1  
+> possessor  1  
+6896c6959
+< germany  11  
+---
+> germany  1  
+6898a6962
+> germany  1  
+6899a6964,6965
+> germany  1  
+> germany  1  
+6903a6970
+> germany  7  
+6944c7011
+< esteemed  2  
+---
+> esteemed  1  
+6946a7014
+> esteemed  1  
+7161c7229
+< clerks  2  
+---
+> clerks  1  
+7165a7234
+> clerks  1  
+7925,7926c7994,7995
+< levy  3  
+< faithfully  3  
+---
+> levy  1  
+> faithfully  1  
+7934a8004,8005
+> levy  1  
+> faithfully  1  
+7935a8007,8008
+> levy  1  
+> faithfully  1  
+8002c8075
+< nobility  9  
+---
+> nobility  1  
+8003a8077
+> nobility  1  
+8007a8082
+> nobility  1  
+8009a8085
+> nobility  1  
+8010a8087
+> nobility  5  
+8120c8197,8198
+< devouring  2  
+---
+> devouring  1  
+> devouring  1  

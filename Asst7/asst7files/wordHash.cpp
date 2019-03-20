@@ -1,4 +1,6 @@
 #include <iostream>
+#include <algorithm>
+#include <vector>
 #include "wordHash.h"
 using namespace std;
 
@@ -143,9 +145,9 @@ void wordHash::printHash() const{
 
 void wordHash::showHashStats() const{
     cout << "Hash Stats" << endl;
-    cout << "\tCurrent Hash Size: " << hashSize << endl;
-    cout << "\tHash Resize Operations: " << reSizeCount << endl;
-    cout << "\tHash Collisions: " << collisionCount << endl;
+    cout << "   Current Hash Size: " << hashSize << endl;
+    cout << "   Hash Resize Operations: " << reSizeCount << endl;
+    cout << "   Hash Collisions: " << collisionCount << endl;
 }
 
 
@@ -176,9 +178,8 @@ void wordHash::insert(string word, unsigned int count){
             break;
         }
 
-
         // Start probing for empty location.
-        if(wordList[newHashIndex] != ""){
+        else if(wordList[newHashIndex] != ""){
             collisionCount++;
             probe++;
             newHashIndex = next(hashIndex, probe);
@@ -193,7 +194,6 @@ void wordHash::insert(string word, unsigned int count){
 unsigned int wordHash::hash(string word) const{
     
 
-    
     unsigned int hash = 0;
 
     for(unsigned int i = 0; i < word.length(); ++i){
@@ -214,11 +214,9 @@ unsigned int wordHash::hash(string word) const{
 // The original hash value(first located index) and the counter will be passed in
 // so that the function can be called multiple times so that it can probe further.
 unsigned int wordHash::next(unsigned int position, unsigned int counter) const{
-    
-
-    
 
     return (position + (counter * counter)) % hashSize;
+
 }
 
 //----------------------------------------------------------------------------------
@@ -230,6 +228,7 @@ void wordHash::rehash(){
         return;
     }
 
+    reSizeCount++;
 
     static const unsigned int hashSizes[12] = {
     30011, 60013, 120017, 240089, 480043, 960017, 1920013,
@@ -237,7 +236,7 @@ void wordHash::rehash(){
     };
 
 
-    // Store the memory location of previous array and create a new bigger array.
+    // Store the memory location of previous array.
     string *prvWordList = wordList;
     unsigned int *prvWordCounts = wordCounts;
     unsigned int prvHashSize = hashSize;
@@ -246,7 +245,7 @@ void wordHash::rehash(){
     // Update to new hash table size.
     hashSize = hashSizes[reSizeCount];
 
-
+    // Allocate memory for larger array.
     wordList = new string[hashSizes[reSizeCount]];
     wordCounts = new unsigned int[hashSizes[reSizeCount]];
 
@@ -264,8 +263,6 @@ void wordHash::rehash(){
             insert(prvWordList[i], prvWordCounts[i]);
     }
 
-
-    reSizeCount++;
 
     delete[] prvWordList;
     delete[] prvWordCounts;

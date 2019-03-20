@@ -1,0 +1,7 @@
+3a4,5
+> resize...
+> resize...
+13c15
+<    Hash Collisions: 71847
+---
+>    Hash Collisions: 71859

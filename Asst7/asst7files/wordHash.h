@@ -30,6 +30,7 @@ public:
     void showHashStats() const;                                 // Print the current hash size, hash table resize count,
                                                                 // and collision count.
 
+    void printHashInOrder() const;
     
 
 
@@ -46,7 +47,7 @@ private:
     unsigned int *wordCounts;
 
     static constexpr double loadFactor = 0.65;
-    static constexpr int initialHashSize = 9973;
+    static constexpr int initialHashSize = 30011;
 
     void insert(std::string, unsigned int);                     // Insert the passed item into the hash table. If the hash
                                                                 // table entries exceeds the load factor (count/tableSize),

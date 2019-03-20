@@ -1,0 +1,8 @@
+11,13c11,13
+< 	Current Hash Size: 30011
+< 	Hash Resize Operations: 0
+< 	Hash Collisions: 66
+---
+>    Current Hash Size: 30011
+>    Hash Resize Operations: 0
+>    Hash Collisions: 66

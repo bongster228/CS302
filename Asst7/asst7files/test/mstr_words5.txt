@@ -8,7 +8,7 @@ Document File Name: words5.txt
 Total Word Count: 262140
 Unique Word Count: 2
 Hash Stats
-   Current Hash Size: 9973
+   Current Hash Size: 30011
    Hash Resize Operations: 0
    Hash Collisions: 0
 
