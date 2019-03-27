@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <chrono>
 
 #include "wordCount.h"
 
@@ -43,6 +44,7 @@ int main(int argc, char *argv[])
 
 //  Get document concordance (if file is OK).
 
+
 	if (myDocument.readDocument(docFile) ) {
 		cout << bold << green << "Document Information:" << endl;
 		cout << "---------------------" << unbold << endl;
@@ -70,6 +72,7 @@ int main(int argc, char *argv[])
 //  All done.
 
 	cout << bars << endl << "Game Over, thank you for playing." << endl;
+
 
 	return 0;
 }

@@ -193,7 +193,7 @@ void wordHash::insert(string word, unsigned int count){
 
 unsigned int wordHash::hash(string word) const{
     
-
+    
     unsigned int hash = 0;
 
     for(unsigned int i = 0; i < word.length(); ++i){

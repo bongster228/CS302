@@ -7,8 +7,7 @@ all: concordance
 
 concordance: $(OBJ1) $(OBJ2) $(DEPS)
 	$(CC) $(OBJ1) $(OBJ2) -o concordance
-	cp concordance test/
-
+	
 wordHash.o: wordHash.cpp $(DEPS)
 	$(CC) -c wordHash.cpp
 
