@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <fstream>
 
 template <class myType>
 class priorityQueue {
@@ -27,7 +28,7 @@ public:
                                                 // each level. 
 
     bool readData(const std::string);           // Read data form the passed file. The file format will be <dataItem> and
-                                                // then <priority>. If the fir cannot be opned or read, then return false.
+                                                // then <priority>. If the file cannot be opened or read, then return false.
                                                 // If file can be read, data should be palced into the heap in the order
                                                 // read, then buildHeap() is called and return true.
 
@@ -35,8 +36,8 @@ public:
 private:
 
     struct heapNode{
-        int priority;
-        myType name;
+        int priority = 0;
+        myType name = {};
     };
 
     int count;
@@ -65,8 +66,10 @@ template<class myType>
 priorityQueue<myType>::priorityQueue(int size){
 
     heapSize = size;
-    count = 0;                              
+    count = 0;
+                          
     myHeap = new heapNode[heapSize];        // Allocate memory for heap array.
+
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -89,11 +92,9 @@ int priorityQueue<myType>::entries() const{
 template<class myType>
 void priorityQueue<myType>::insert(const myType item, const int priorityVal){
 
-    /*
-    if(count >= heapSize){
+    if(count == heapSize){
         resize();
     }
-    */
 
     // Create new node with the parameters given.
     heapNode newItem;
@@ -159,6 +160,35 @@ void priorityQueue<myType>::printHeap() const{
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+
+template<class myType>
+bool priorityQueue<myType>::readData(const std::string fileName){
+
+    std::fstream file;
+
+    file.open(fileName);
+    if(!file.is_open()) return false;
+
+    std::string dataItem;
+    int dataPriority;
+
+
+    while(file >> dataItem >> dataPriority){
+
+        count++;
+        if(count == heapSize - 1) resize();
+        
+        myHeap[count].name = dataItem;
+        myHeap[count].priority = dataPriority;
+        
+    }
+
+    buildHeap();
+
+    return true;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 // Private Members
 
 template<class myType>
@@ -218,6 +248,7 @@ void priorityQueue<myType>::reheapDown(int index){
         myHeap[index] = myHeap[smallerIndex];
         myHeap[smallerIndex] = temp;
 
+
         // Recurisively repeat the process until current node has lower priority than
         // all of its children.
         reheapDown(smallerIndex);
@@ -234,6 +265,28 @@ void priorityQueue<myType>::reheapDown(int index){
 template<class myType>
 void priorityQueue<myType>::buildHeap(){
 
+    for(int i = count / 2; i >= 1; --i){
+        reheapDown(i);
+    }
 
+}
 
+//----------------------------------------------------------------------------------------------------------------------
+
+template<class myType>
+void priorityQueue<myType>::resize(){
+
+    // Double the heapSize and store old heap in temp.
+    heapSize *= 2;
+    heapNode *temp = myHeap;
+
+    // Create new heap
+    myHeap = new heapNode[heapSize];
+
+    // Deep copy heap
+    for(int i = 1; i <= count; ++i){
+        myHeap[i] = temp[i];
+    }
+
+    delete[] temp;
 }
