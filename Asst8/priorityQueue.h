@@ -196,17 +196,17 @@ void priorityQueue<myType>::reheapDown(int index){
     int smallerIndex = index;               // Will have the index of the lowest priority node.
     heapNode temp;
 
-
+    // Base case.
     if(index > count) return;
 
     // Compare current index with left child.
-    if(myHeap[index].priority > myHeap[leftChild].priority){
+    if(leftChild <= count && myHeap[index].priority > myHeap[leftChild].priority){
         smallerIndex = leftChild;
     }
     
 
     // Compare with the right child.
-    if(myHeap[smallerIndex].priority > myHeap[rightChild].priority){
+    if(rightChild <= count && myHeap[smallerIndex].priority > myHeap[rightChild].priority){
         smallerIndex = rightChild;
     }
 
@@ -225,6 +225,7 @@ void priorityQueue<myType>::reheapDown(int index){
 
     // Base case. Current node already has the lowest priority than all of its children.
     return;
+
 
 }
 
