@@ -92,19 +92,18 @@ int priorityQueue<myType>::entries() const{
 template<class myType>
 void priorityQueue<myType>::insert(const myType item, const int priorityVal){
 
-    if(count == heapSize){
+    if(count == heapSize - 1){
         resize();
     }
 
     // Create new node with the parameters given.
-    heapNode newItem;
-    newItem.name = item;
-    newItem.priority = priorityVal;
+
 
     count++;
 
     // Insert the new node in the last spot
-    myHeap[count] = newItem;
+    myHeap[count].name = item;
+    myHeap[count].priority = priorityVal;
     
 
     reheapUp(count);
