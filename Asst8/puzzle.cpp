@@ -69,6 +69,9 @@ void puzzle::setInitialState(unsigned int puzzleArr[]){
 
     }
 
+    // Create states array to store intermediate states and initialize.
+    states = new unsigned int*[stateSize];
+    
 }
 
 //--------------------------------------------------------------------------------------------
@@ -139,6 +142,7 @@ bool puzzle::readPuzzle(string fileName){
 
     numOfTiles = order * order;
 
+    // Array created to store puzzle from file.
     unsigned int puzzleFromFile[ORDER_MAX];
 
     for(int i = 0; i < numOfTiles; ++i){
@@ -153,8 +157,82 @@ bool puzzle::readPuzzle(string fileName){
     return true;
 }
 
+//--------------------------------------------------------------------------------------------
+
+bool puzzle::findSolution(){
+
+    // Ensure initialState and goalState are valid.
+    if(!isValid(initialState) || !isValid(goalState)) return false;
+
+    priorityQueue<unsigned int> priorityStates;
+    unsigned int statesIndex = 0;
+
+    unsigned int dequeuedIndex = 0;
+    int dequeuedPriority = 0;
+
+    // initialState is stored at index 0 in the states array.
+    priorityStates.insert(statesIndex, initialState[numOfTiles + 1]);
+    
+    // The initialState in put in the 0th index of the states array.
+    states[statesIndex] = initialState;
+
+    unsigned int *moveUp, *moveDown, *moveLeft, *moveRight, *intermeidateState;
+
+    while(!priorityStates.isEmpty() && statesIndex <= stateSize){
+
+        priorityStates.deleteMin(dequeuedIndex, dequeuedPriority);
+
+        // Break out of the loop if solution is found.
+        if(isGoal(states[dequeuedIndex])) break;
+
+        // Get the copy of current state. Make deep copy.
+        intermeidateState = states[dequeuedIndex];
+
+        // Check for legal moves using moveTile function. If move is legal, create new state.
+        // Also check for repeated state, 
+
+
+        // Move the blank tile in the array.
+        // 1 is up, 2 is down, 3 is left, 4 is right
+
+        // Move up
+        
+
+
+    }
+
+
+}
 
 //--------------------------------------------------------------------------------------------
+
+int puzzle::manhattan(unsigned int puzzleArr[]) const{
+
+    int x0, y0, x1, y1, val;
+    int sum = 0;
+
+    for(int i = 0; i < numOfTiles; ++i){
+
+        x0 = i % order;
+        y0 = i / order;
+        val = puzzleArr[i];
+        if(val == 0) continue;
+
+        for(int j = 0; j < numOfTiles; ++j){
+            if(val == goalState[j]){
+                x1 = j % order;
+                y1 = j / order;
+            }
+        }
+        
+        sum += (abs(x1 - x0) + abs(y1 - y0));
+    }
+
+    return sum;
+}
+
+
+//############################################################################################
 // Private Members
 
 bool puzzle::isValid(unsigned int puzzleArr[]) const{
@@ -190,3 +268,98 @@ bool puzzle::isValid(unsigned int puzzleArr[]) const{
     return true;
 
 }
+
+//--------------------------------------------------------------------------------------------
+
+bool puzzle::isGoal(unsigned int puzzleArr[]) const{
+
+    for(int i = 0; i < numOfTiles; ++i){
+        if(puzzleArr[i] != goalState[i]) return false;
+    }
+
+    return true;
+
+}
+
+//--------------------------------------------------------------------------------------------
+
+bool puzzle::isRepeat(unsigned int puzzleArrp[]) const{
+
+}
+
+//--------------------------------------------------------------------------------------------
+
+void puzzle::printSolution(int num, int num2) const{
+
+}
+
+//--------------------------------------------------------------------------------------------
+
+bool puzzle::moveTile(unsigned int puzzleArr[], int direction){
+
+    // 1 is up, 2 is down, 3 is left, 4 is right
+
+    unsigned int blankTileIndex = 0;
+    int moveChecker = 0;            // Used to check for legal moves.
+    unsigned int temp = 0;
+
+    // Find the location of the blank tile.
+    for(int i = 0; i < numOfTiles; ++i){
+        if(puzzleArr[i] == 0) blankTileIndex = i;
+    }
+
+    // Move tile up. Checks move if its legal
+    moveChecker = blankTileIndex - order;
+    if(direction == 1 && moveChecker > 0){
+
+        // Swap the tiles
+        temp = puzzleArr[blankTileIndex - order];
+        puzzleArr[blankTileIndex - order] = 0;
+        puzzleArr[blankTileIndex] = temp;
+
+        // Store movement info in the array.
+        puzzleArr[numOfTiles + 2] = direction;
+
+        return true;
+    }
+
+    // Move tile down. 
+    moveChecker = blankTileIndex + order;
+    if(direction == 2 && moveChecker < numOfTiles){
+
+        temp = puzzleArr[blankTileIndex + order];
+        puzzleArr[blankTileIndex + order] = 0;
+        puzzleArr[blankTileIndex] = temp;
+
+        puzzleArr[numOfTiles + 2] = direction;
+
+        return true;
+    }
+
+    // Move tile left.
+    if(direction == 3 && blankTileIndex % order != 0){
+
+        temp = puzzleArr[blankTileIndex - 1];
+        puzzleArr[blankTileIndex - 1] = 0;
+        puzzleArr[blankTileIndex] = temp;
+
+        puzzleArr[numOfTiles + 2] = direction;
+
+        return true;
+    }
+
+    // Move tile right.
+    moveChecker = blankTileIndex + 1;
+    if(direction == 4 && moveChecker % order != 0){
+        temp = puzzleArr[blankTileIndex + 1];
+        puzzleArr[blankTileIndex + 1] = 0;
+        puzzleArr[blankTileIndex] = temp;
+
+        puzzleArr[numOfTiles + 2] = direction;
+
+        return true;
+    }    
+
+    return false;
+}
+

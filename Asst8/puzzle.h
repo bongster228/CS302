@@ -32,6 +32,8 @@ public:
     int manhattan(unsigned int[]) const;            // Compute the sum of the manhattan distance between each tile in passed state and goal
                                                     // state (excluding blank tile).
 
+    bool moveTile(unsigned int[], int);
+
     void setTitle(std::string);                     // Set the current tile to the passed value.
     std::string getTitle() const;                   // Return the current puzzle title.
 
