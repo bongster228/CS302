@@ -1,0 +1,6 @@
+simple test (4 steps)
+3
+3 1 0
+4 2 5
+7 8 6
+

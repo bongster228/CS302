@@ -96,7 +96,7 @@ int main()
 
 // ------------------------------------------------------------------
 //  Testing for addresses.
-//	DOes not print addresses since they can change between executions...
+//	Does not print addresses since they can change between executions...
 
 	int	**arrs;
 	arrs = new int *[10];
@@ -117,6 +117,10 @@ int main()
 
 	while (!myHeap2.isEmpty())
 		myHeap2.deleteMin(currArr, currPriority);
+
+	for (int i=0; i<10; i++)
+		delete [] arrs[i];
+	delete [] arrs;
 
 // ------------------------------------------------------------------
 //  Large testing...
@@ -152,8 +156,8 @@ int main()
 
 	priorityQueue<string>	myHeap4;
 	int	limit=10;
-	string	currEmail;
-	int	p;
+	string	currEmail="";
+	int	p=0;
 
 	cout << endl << bars << endl << bold <<
 		"Test Set #4" << unbold << endl;
