@@ -32,7 +32,6 @@ public:
     int manhattan(unsigned int[]) const;            // Compute the sum of the manhattan distance between each tile in passed state and goal
                                                     // state (excluding blank tile).
 
-    bool moveTile(unsigned int[], int);
 
     void setTitle(std::string);                     // Set the current tile to the passed value.
     std::string getTitle() const;                   // Return the current puzzle title.
@@ -43,9 +42,11 @@ private:
     std::string title;
     int order;
     int numOfTiles;
+    unsigned int usedStates;
     unsigned int *initialState;
     unsigned int *goalState;
     unsigned int **states;
+
 
     static const int stateSize = 80000000;
     static const int ORDER_MIN = 3;
@@ -61,7 +62,15 @@ private:
                                                 // state arrays) and return true if a copy was found and return false otherwise. 
                                                 // Only chekc the approriate tile positions(i.e. 0-8 for the 8 puzzle with order 3)
 
-    void printSolution(int, int) const;         // Recursively print the formatted solution using the parent state array index pointers
+    void printSolution(unsigned int, int) const;         // Recursively print the formatted solution using the parent state array index pointers
                                                 // and the printPuzzle().
+
+    void deepCopyArr(unsigned int[], unsigned int[], int);
+
+    bool isSameArr(unsigned int[], unsigned int[]) const;
+
+    bool checkMoves(unsigned int[]) const;
+
+    bool moveTile(unsigned int[], unsigned int);
 
 };
