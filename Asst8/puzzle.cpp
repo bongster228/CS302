@@ -44,7 +44,7 @@ puzzle::~puzzle(){
 
     delete[] goalState;
 
-    for(int i = 0; i < usedStates; ++i){
+    for(unsigned int i = 0; i <= usedStates; ++i){
         delete[] states[i];
     }
 
@@ -62,7 +62,6 @@ string puzzle::getTitle() const{
 
 void puzzle::setInitialState(unsigned int puzzleArr[]){
 
-
     if(isValid(puzzleArr)){
 
         // Create new initial state based on puzzle order.
@@ -70,7 +69,6 @@ void puzzle::setInitialState(unsigned int puzzleArr[]){
         for(int i = 0; i < numOfTiles + 2; ++i){
             initialState[i] = 0;
         }
-
 
         // Make deep copy of initialState from passed in array.
         for(int i = 0; i < numOfTiles; ++i){
@@ -189,11 +187,12 @@ bool puzzle::findSolution(){
 
 
     priorityQueue<unsigned int> priorityStates;
+
     unsigned int statesIndex = 0;
-
-
-    unsigned int dequeuedIndex = 0;
+    unsigned int dequeuedIndex = 0;             // Also used as parent index to track path
     int dequeuedPriority = 0;
+    unsigned int *intermeidateState = nullptr;
+    int priority = 0, level = 0;
 
 
     // the initialState is put into the priority queue with 0 priority value.
@@ -202,10 +201,6 @@ bool puzzle::findSolution(){
 
     // The initialState in the 0th index of the states array.
     states[statesIndex] = initialState;
-
-
-    unsigned int *intermeidateState = nullptr;
-    int priority = 0, level = 0;
 
 
     while(!priorityStates.isEmpty() && statesIndex <= stateSize){
@@ -225,15 +220,19 @@ bool puzzle::findSolution(){
         // 1 is up, 2 is down, 3 is left, 4 is right
         for(int i = 1; i < 5; ++i){
 
-            intermeidateState = new unsigned int[numOfTiles + 3];
 
+            // Check if there are legal moves.
+            if(checkMoves(states[dequeuedIndex], i)){
 
-            // Get the copy of current state. Make deep copy.
-            deepCopyArr(states[dequeuedIndex], intermeidateState, numOfTiles + 2);
+                // Create new state if there is a legal move.
+                intermeidateState = new unsigned int[numOfTiles + 3];
 
+                // Get the copy of current state. Make deep copy.
+                deepCopyArr(states[dequeuedIndex], intermeidateState, numOfTiles + 2);
 
-            // Passed in intermediateState is modified inside the moveTile function.
-            if(moveTile(intermeidateState, i)){
+                // Modify copied intermediateState inside the function.
+                moveTile(intermeidateState, i);
+
 
                 if(isRepeat(intermeidateState)) delete[] intermeidateState;
                 else{
@@ -268,7 +267,8 @@ bool puzzle::findSolution(){
 
 int puzzle::manhattan(unsigned int puzzleArr[]) const{
 
-    int x0, y0, x1, y1, val;
+    int x0, y0, x1, y1;
+    unsigned int val;
     int sum = 0;
 
     for(int i = 0; i < numOfTiles; ++i){
@@ -310,7 +310,7 @@ bool puzzle::isValid(unsigned int puzzleArr[]) const{
     for(int i = 0; i < numOfTiles; ++i){
 
         // Check each element in the array to make sure the tile values are in range
-        if(puzzleArr[i] < 0 || puzzleArr[i] > numOfTiles - 1){
+        if(puzzleArr[i] > numOfTiles - 1){
             return false;
         }
 
@@ -419,20 +419,12 @@ void puzzle::printSolution(unsigned int index, int step) const{
 
 //--------------------------------------------------------------------------------------------
 
-bool puzzle::checkMoves(unsigned int puzzleArrp[]) const{
-
-    
-
-}
-
-//--------------------------------------------------------------------------------------------
-bool puzzle::moveTile(unsigned int puzzleArr[], unsigned int direction){
+bool puzzle::checkMoves(unsigned int puzzleArr[], unsigned direction) const{
 
     // 1 is up, 2 is down, 3 is left, 4 is right
 
     unsigned int blankTileIndex = 0;
     int moveChecker = 0;            // Used to check for legal moves.
-    unsigned int temp = 0;
 
     // Find the location of the blank tile.
     for(int i = 0; i < numOfTiles; ++i){
@@ -442,6 +434,44 @@ bool puzzle::moveTile(unsigned int puzzleArr[], unsigned int direction){
     // Move tile up. Checks move if its legal
     moveChecker = blankTileIndex - order;
     if(direction == 1 && moveChecker > 0){
+        return true;
+    }
+
+    // Move tile down. 
+    moveChecker = blankTileIndex + order;
+    if(direction == 2 && moveChecker < numOfTiles){
+        return true;
+    }
+
+    // Move tile left.
+    if(direction == 3 && blankTileIndex % order != 0){
+        return true;
+    }
+
+    // Move tile right.
+    moveChecker = blankTileIndex + 1;
+    if(direction == 4 && moveChecker % order != 0){
+        return true;
+    }    
+
+    return false;
+}
+
+//--------------------------------------------------------------------------------------------
+void puzzle::moveTile(unsigned int puzzleArr[], unsigned int direction){
+
+    // 1 is up, 2 is down, 3 is left, 4 is right
+
+    unsigned int blankTileIndex = 0;
+    unsigned int temp = 0;
+
+    // Find the location of the blank tile.
+    for(int i = 0; i < numOfTiles; ++i){
+        if(puzzleArr[i] == 0) blankTileIndex = i;
+    }
+
+    // Move tile up.
+    if(direction == 1){
 
         // Swap the tiles
         temp = puzzleArr[blankTileIndex - order];
@@ -450,48 +480,36 @@ bool puzzle::moveTile(unsigned int puzzleArr[], unsigned int direction){
 
         // Store movement info in the array.
         puzzleArr[numOfTiles + 2] = direction;
-
-        return true;
     }
 
     // Move tile down. 
-    moveChecker = blankTileIndex + order;
-    if(direction == 2 && moveChecker < numOfTiles){
+    if(direction == 2){
 
         temp = puzzleArr[blankTileIndex + order];
         puzzleArr[blankTileIndex + order] = 0;
         puzzleArr[blankTileIndex] = temp;
 
         puzzleArr[numOfTiles + 2] = direction;
-
-        return true;
     }
 
     // Move tile left.
-    if(direction == 3 && blankTileIndex % order != 0){
+    if(direction == 3){
 
         temp = puzzleArr[blankTileIndex - 1];
         puzzleArr[blankTileIndex - 1] = 0;
         puzzleArr[blankTileIndex] = temp;
 
         puzzleArr[numOfTiles + 2] = direction;
-
-        return true;
     }
 
     // Move tile right.
-    moveChecker = blankTileIndex + 1;
-    if(direction == 4 && moveChecker % order != 0){
+    if(direction == 4){
         temp = puzzleArr[blankTileIndex + 1];
         puzzleArr[blankTileIndex + 1] = 0;
         puzzleArr[blankTileIndex] = temp;
 
         puzzleArr[numOfTiles + 2] = direction;
-
-        return true;
     }    
-
-    return false;
 }
 
 

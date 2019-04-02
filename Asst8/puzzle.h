@@ -69,8 +69,8 @@ private:
 
     bool isSameArr(unsigned int[], unsigned int[]) const;
 
-    bool checkMoves(unsigned int[]) const;
+    bool checkMoves(unsigned int[], unsigned int) const;
 
-    bool moveTile(unsigned int[], unsigned int);
+    void moveTile(unsigned int[], unsigned int);
 
 };
