@@ -56,6 +56,7 @@ ansFile="mstr"
 outFile="out"
 ext=".txt"
 alt=a
+alt2=b
 iter=0
 
 for ((i=0; i<=24; i++))
@@ -65,7 +66,8 @@ do
 	./$1 $inFile$iter$ext >$outFile$iter$ext
 
 	if `diff $outFile$iter$ext $ansFile$iter$ext >/dev/null` ||
-		`diff $outFile$iter$ext $ansFile$iter$alt$ext >/dev/null`; then
+		`diff $outFile$iter$ext $ansFile$iter$alt$ext >/dev/null` ||
+		`diff $outFile$iter$ext $ansFile$iter$alt2$ext >/dev/null`; then
 		echo "Test $iter Successful"
 	else
 		diff $outFile$iter$ext $ansFile$iter$ext
