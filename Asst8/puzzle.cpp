@@ -17,7 +17,8 @@ puzzle::puzzle(){
 
     initialState = nullptr;
     goalState = nullptr;
-    states = nullptr; 
+    states = new unsigned int*[stateSize];
+    
 }
 
 //--------------------------------------------------------------------------------------------
@@ -77,8 +78,7 @@ void puzzle::setInitialState(unsigned int puzzleArr[]){
 
     }
 
-    // Create states array to store intermediate states and initialize.
-    states = new unsigned int*[stateSize];
+
     
 }
 
@@ -120,6 +120,8 @@ void puzzle::printPuzzle() const{
         else cout << "    |";
     
     }
+
+    cout << "   move: initial" << endl << endl << endl << endl;
 }
 
 //--------------------------------------------------------------------------------------------
@@ -216,6 +218,7 @@ bool puzzle::findSolution(){
 
         level++;
 
+
         // Move the blank tile in the array.
         // 1 is up, 2 is down, 3 is left, 4 is right
         for(int i = 1; i < 5; ++i){
@@ -259,6 +262,7 @@ bool puzzle::findSolution(){
         } // end for()
 
     } // end while()
+
 
     return false;
 }
@@ -433,7 +437,7 @@ bool puzzle::checkMoves(unsigned int puzzleArr[], unsigned direction) const{
 
     // Move tile up. Checks move if its legal
     moveChecker = blankTileIndex - order;
-    if(direction == 1 && moveChecker > 0){
+    if(direction == 1 && moveChecker >= 0){
         return true;
     }
 
@@ -522,4 +526,3 @@ void puzzle::deepCopyArr(unsigned int original[], unsigned int copy[], int size)
     }
 
 }
-
