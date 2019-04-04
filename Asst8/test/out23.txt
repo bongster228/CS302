@@ -12,10 +12,6 @@ Puzzle: unsolvable
   |____|____|____|
   |    |    |    |
   |  8 |  7 |    |
-  |____|____|____|     move: initial
-
-
-
-No solution exists.
+  |____|____|____|No solution exists.
 *****************************************************************
 Game Over, thank you for playing.
