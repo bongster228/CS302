@@ -1,0 +1,55 @@
+*****************************************************************
+[1mCS 302 - Assignment #9
+Elbonia Internet Installation[0m
+
+=================================================================
+Elbonia Internet Configuration: 
+
+addEdge: error, vertex to and from can not be the same.
+addEdge: error, vertex to and from can not be the same.
+Graph Adjacency Matrix:
+   Title: Simple Graph 3 (w/errs)
+
+             0       1       2       3       4       5       6       7       8
+      ------------------------------------------------------------------------
+     0|       *    4.00      --      --      --      --      --    8.00      --
+     1|    4.00       *    8.00      --      --      --      --   11.00      --
+     2|      --    8.00       *    7.00      --    4.00      --      --    2.00
+     3|      --      --    7.00       *    9.00   14.00   14.00      --      --
+     4|      --      --      --    9.00       *   10.00      --      --      --
+     5|      --      --    4.00   14.00   10.00       *    2.00      --      --
+     6|      --      --      --   14.00      --    2.00       *    1.00    6.00
+     7|    8.00   11.00      --      --      --      --    1.00       *    7.00
+     8|      --      --    2.00      --      --      --    6.00    7.00       *
+
+
+*****************************************************************
+Elbonian Internet Configuration:
+--------------------------------
+
+By Vertex's:
+------------
+1 - 0  4.00
+2 - 5  4.00
+3 - 2  7.00
+4 - 3  9.00
+5 - 6  2.00
+6 - 7  1.00
+7 - 0  8.00
+8 - 2  2.00
+
+By Elbonian Cities:
+-------------------
+County - Yellowhead  4.00
+Rutigliano - Ogbomosho  4.00
+Lille - Rutigliano  7.00
+Rachecourt - Lille  9.00
+Ogbomosho - Kamalia  2.00
+Kamalia - Linkebeek  1.00
+Linkebeek - Yellowhead  8.00
+Poggiodomo - Rutigliano  2.00
+
+Total Cost:  $37.00k
+
+*****************************************************************
+The Elbonian Chancellor thanks you.

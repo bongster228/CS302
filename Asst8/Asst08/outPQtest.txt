@@ -1,0 +1,97 @@
+*****************************************************************
+[1mCS 302 - Assignment #8
+Priority Queue Tester[0m
+
+
+=================================================================
+[1mTest Set #0[0m
+----------------------------------------
+PQ Heap (level order):
+google  1
+amazon  2
+newegg  3
+apple  4
+dell  5
+oracle  6
+cisco  7
+jupiter  8
+belkin  9
+ebay  10
+----------------------------------------
+PQ Heap Size: 10
+Priority Order:
+google  1
+amazon  2
+newegg  3
+apple  4
+dell  5
+oracle  6
+cisco  7
+jupiter  8
+belkin  9
+ebay  10
+
+=================================================================
+[1mTest Set #1[0m
+----------------------------------------
+PQ Heap (level order):
+g  1
+x  1
+y  1
+o  2
+n  5
+p  7
+d  9
+a  3
+c  4
+j  6
+b  8
+e  11
+f  12
+h  13
+k  14
+m  15
+----------------------------------------
+PQ Heap Size: 16
+Priority Order:
+g  1
+x  1
+y  1
+o  2
+a  3
+c  4
+n  5
+j  6
+p  7
+b  8
+d  9
+e  11
+f  12
+h  13
+k  14
+m  15
+
+=================================================================
+[1mTest Set #2[0m
+----------------------------------------
+PQ Heap Size: 10
+
+=================================================================
+[1mTest Set #3[0m
+Large test successful.
+
+=================================================================
+[1mTest Set #4[0m
+Email (1):  leo@MorbimetusVivamus.com
+Email (2):  non.cursus@sapien.edu
+Email (3):  ut.ipsum.ac@et.org
+Email (4):  nec.ante@eteuismodet.edu
+Email (5):  netus@nonummy.com
+Email (6):  sit.amet.risus@tacitisociosquad.net
+Email (7):  nascetur.ridiculus.mus@DonecestNunc.com
+Email (8):  sed.dolor.Fusce@ornaretortorat.org
+Email (9):  id.risus@non.co.uk
+Email (10):  urna.justo@lectus.ca
+
+*****************************************************************
+Game Over, thank you for playing.

@@ -1,0 +1,113 @@
+#!/bin/bash
+# CS 302, assignment #8 test script.
+
+# ---------------------------------------------------------
+# Initial checks.
+#	Ensure executable file exists.
+#	Verify availability of testing support files.
+
+if [ -z $1 ]; then
+	echo "Error, must provide executable file name."
+	exit
+fi
+
+if [ ! -e $1 ] || [ ! -x $1 ]; then
+	echo "Error, unable to find $1 executable file."
+	exit
+fi
+
+if [ ! -e p0.txt ]; then
+	echo "Error, unable to find test input files."
+	exit
+fi
+
+if [ ! -e mstr0.txt ]; then
+	echo "Error, unable to find test solution files."
+	exit
+fi
+
+# ---------------------------------------------------------
+#  Test priority queue data structure
+#
+clear
+
+echo "${bolded}CS 302 Assignment #8 Test Script${normal}"
+echo
+echo
+
+echo "./pqTest > outPQtest.txt"
+./pqTest > outPQtest.txt
+
+	if `diff outPQtest.txt mstrPQtest.txt >/dev/null`; then
+		echo "PQ Test Successful"
+	else
+		diff outPQtest.txt mstrPQtest.txt
+	fi
+echo
+echo
+
+# ---------------------------------------------------------
+# Begin tests.
+#	puzzle files are in data/
+#
+
+inFile="p"
+ansFile="mstr"
+outFile="out"
+ext=".txt"
+alt=a
+alt2=b
+iter=0
+
+for ((i=0; i<=24; i++))
+do
+#
+	echo "./"$1" $inFile$iter$ext >$outFile$iter$ext"
+	./$1 $inFile$iter$ext >$outFile$iter$ext
+
+	if `diff $outFile$iter$ext $ansFile$iter$ext >/dev/null` ||
+		`diff $outFile$iter$ext $ansFile$iter$alt$ext >/dev/null` ||
+		`diff $outFile$iter$ext $ansFile$iter$alt2$ext >/dev/null`; then
+		echo "Test $iter Successful"
+	else
+		diff $outFile$iter$ext $ansFile$iter$ext
+	fi
+
+	echo
+	echo
+	((iter++))
+#
+done
+#
+# ---------------------------------------------------------
+#  Final test with valgrind
+#
+echo -e "\n**********************************************************************"
+echo "Final test - check for memory leaks."
+echo
+echo "   Should show: \"All heap blocks were freed -- no leaks are possible\""
+echo "   And no other errors."
+echo "   Note, may see:  Warning: set address range perms: large range"
+echo "    (which is OK)"
+echo
+
+iter=21
+
+echo "Final Test:"
+echo
+echo "valgrind ./$1 $inFile$iter$ext >$outFile$iter$ext"
+valgrind ./$1 $inFile$iter$ext >$outFile$iter$ext
+
+if `diff $outFile$iter$ext $ansFile$iter$ext >/dev/null` ||
+	`diff $outFile$iter$ext $ansFile$iter$alt$ext >/dev/null`; then
+	echo "Test $iter Successful"
+else
+	diff $outFile$iter$ext $ansFile$iter$ext
+fi
+
+# -----
+
+echo
+echo "Test Script Done."
+
+
