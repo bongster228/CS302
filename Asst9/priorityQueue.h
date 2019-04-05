@@ -7,7 +7,7 @@ class priorityQueue {
 
 public:
 
-    priorityQueue(int size = 1000);         // Initialize the binary heap to at least 1000.
+    priorityQueue(int size = 1000);             // Initialize the binary heap to at least 1000.
     ~priorityQueue();
 
     int entries() const;                        // Return the total count of elements in the heap.
@@ -33,6 +33,8 @@ public:
                                                 // read, then buildHeap() is called and return true.
 
     void changePriority(myType, double);
+
+    bool itemInHeap(myType);
 
 
 private:
@@ -205,6 +207,19 @@ void priorityQueue<myType>::changePriority(myType vertex, double priorityVal){
         }
 
     }// end for()
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+template<class myType>
+bool priorityQueue<myType>::itemInHeap(myType item){
+
+    for(int i = 0; i < heapSize; ++i){
+
+        if(heapNode[i].name == item) return true;
+    }
+
+    return false;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

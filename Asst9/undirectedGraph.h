@@ -33,7 +33,7 @@ public:
 
     bool readCityNames(const std::string);      // The first entry in the file will correspond to vertex 0 and so forth. The city names array should
                                                 // be cretaed and the city name stored in the array. Only vertexCount number of city names should 
-                                                // be read from the file. IF there is an error, return false. If the read is successful, return true.
+                                                // be read from the file. If there is an error, return false. If the read is successful, return true.
 
     std::string getTitle() const;
     void setTitle(const std::string);

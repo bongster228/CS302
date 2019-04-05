@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iomanip>
 #include "undirectedGraph.h"
+#include "priorityQueue.h"
 using namespace std;
 
 //----------------------------------------------------------------
@@ -45,6 +46,18 @@ undirectedGraph::~undirectedGraph(){
 
 //----------------------------------------------------------------
 
+string undirectedGraph::getTitle() const{
+    return title;
+}
+
+//----------------------------------------------------------------
+
+void undirectedGraph::setTitle(const string graphTitle){
+    title = graphTitle;
+}
+
+//----------------------------------------------------------------
+
 void undirectedGraph::setGraphSize(int numOfVertex){
 
     // Destroy old graph to prevent memory leak.
@@ -72,7 +85,7 @@ void undirectedGraph::addEdge(int fromVertex, int toVertex, double weight){
 
 // Verify the parameters for validity
 if(fromVertex == toVertex){
-    cout << "From and to vertexes are equal." << endl;
+    cout << "From and to vertices are equal." << endl;
     return;
 }
 
@@ -106,6 +119,7 @@ bool undirectedGraph::readGraph(const string fileName){
 
     // The first line contains title.
     graphFile >> title;
+    setTitle(title);
 
     // The second line contains vertexCount.
     graphFile >> vertexCount;
@@ -182,3 +196,120 @@ void undirectedGraph::printMatrix() const{
 
     } // end for()
 }
+
+//----------------------------------------------------------------
+
+void undirectedGraph::prims(int sourceVertex){
+
+    priorityQueue<double> minWeightHeap;
+
+    pred = new double[vertexCount];
+    dist = new double[vertexCount];
+
+    double minValVertex = 0;
+    double adjVertex = 0;
+    int vertexPriority = 0;
+
+    // Set up heap, predecessor, and distance array.
+    for(int i = 0; i < vertexCount; ++i){
+
+        // Source vertex is initialized with 0 priority
+        // and 0.
+        if(i == sourceVertex){
+
+            minWeightHeap.insert(sourceVertex, 0);
+            pred[sourceVertex] = 0;
+            dist[sourceVertex] = 0.0;
+
+        } // end if()
+
+        // All other vertices are initialized with INF or -1;
+        else {
+
+            minWeightHeap.insert(i, INF);
+            pred[i] = -1;
+            dist[i] = INF;
+
+        } // end else{}
+
+    } // end for()
+
+    // Create MST using prims algorithm
+    while(!minWeightHeap.isEmpty()){
+
+        // Extract min value vertex from heap.
+        minWeightHeap.deleteMin(minValVertex, vertexPriority);
+
+        // For every adjacent vertex to minValVertex
+        for(int i = 0; i < vertexCount; ++i){
+
+            // Hold column at the min vertex and find all adjacent vertices
+            // to the minValVertex.
+            if(graphMatrix[i][int(minValVertex)] != 0){
+                
+                adjVertex = i;
+                
+                // Change dist, pred, and priority if adjVertex has lower weight edge to 
+                // the minValVertex that was dequeued.
+                if(minWeightHeap.itemInHeap(adjVertex) && graphMatrix[int(minValVertex)][int(adjVertex)] < dist[int(adjVertex)]){
+                    
+                    // Set predecessor of adjVertex to minValVertex.
+                    pred[int(adjVertex)] = int(minValVertex);
+
+
+                    // Set weight(distance) of edge between adjVertex and minValVertex to the adjacency value on the graphMatrix
+                    // using the two vertices.
+                    dist[int(adjVertex)] = graphMatrix[int(minValVertex)][int(adjVertex)];
+
+
+                    // Change the priority value of the adjVertex in the heap and peform reheapUp to sustain heap structure.
+                    minWeightHeap.changePriority(adjVertex, graphMatrix[int(minValVertex)][int(adjVertex)]);
+
+                }
+
+            } // end if()
+
+        } // end for()
+
+    } // end while()
+
+    printMST();
+
+}
+
+//----------------------------------------------------------------
+
+bool undirectedGraph::readCityNames(string fileName){
+
+    // Open and check file.
+    fstream cityFile;
+    cityFile.open(fileName);
+    if(!cityFile.is_open()){
+        cout << "City file could not be opened." << endl;
+        return false;
+    }
+
+    cityNames = new string[vertexCount];
+
+    for(int i = 0; i < vertexCount; ++i){
+        cityFile >> cityNames[i];
+    }
+
+    cityFile.close();
+}
+
+//****************************************************************
+// Private Members
+
+void undirectedGraph::printMST() const{
+
+}
+
+//----------------------------------------------------------------
+
+void undirectedGraph::destroyGraph(){
+
+
+}
+
+//----------------------------------------------------------------
