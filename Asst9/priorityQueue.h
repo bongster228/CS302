@@ -201,8 +201,8 @@ void priorityQueue<myType>::changePriority(myType vertex, double priorityVal){
 
         // If found change the priority and reheapUp. Only reheapUp because 
         // the priority will only be decreaseing if change is made.
-        if(heapNode[i].name == vertex){
-            heapNode[i].priority = priorityVal;
+        if(myHeap[i].name == vertex){
+            myHeap[i].priority = priorityVal;
             reheapUp(i);
         }
 
@@ -216,7 +216,7 @@ bool priorityQueue<myType>::itemInHeap(myType item){
 
     for(int i = 0; i < heapSize; ++i){
 
-        if(heapNode[i].name == item) return true;
+        if(myHeap[i].name == item) return true;
     }
 
     return false;

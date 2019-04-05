@@ -42,6 +42,14 @@ undirectedGraph::undirectedGraph(int numOfVertex){
 
 undirectedGraph::~undirectedGraph(){
 
+    for(int i = 0; i < vertexCount; ++i){
+        delete[] graphMatrix[i];
+    }
+
+    delete[] graphMatrix;
+    delete[] dist;
+    delete[] pred;
+    delete[] cityNames;
 }
 
 //----------------------------------------------------------------
@@ -62,6 +70,8 @@ void undirectedGraph::setGraphSize(int numOfVertex){
 
     // Destroy old graph to prevent memory leak.
     if(graphMatrix != nullptr) destroyGraph();
+
+    vertexCount = numOfVertex;
 
     // Create and initialize graphMatrix.
     graphMatrix = new double*[vertexCount];
@@ -167,24 +177,24 @@ void undirectedGraph::printMatrix() const{
     
     // Output top row with indexs representing vertices.
     cout << setw(5) << "";
-    for(int col = 0; col < 5; col++){
+    for(int col = 0; col <= 5; col++){
         cout << setw(8) << col;
     }
     cout << endl;
     
     // Outputs dashes
     cout << setw(5) << "";
-    for(int col = 0; col < 5; col++){
+    for(int col = 0; col <= 5; col++){
         cout << setw(8) << dashes;
     }
     cout << endl;
     
     // Outputs the graphMatrix
-    for(int row = 0; row < 5; ++row){
+    for(int row = 0; row <= 5; ++row){
         
         cout << setw(5) << row << "|";
 
-        for(int column = 0; column < 5; ++column){
+        for(int column = 0; column <= 5; ++column){
             
             if(row == column) cout << setw(8) << "*";
             else if(graphMatrix[row][column] == 0) cout << setw(8) << "--";
@@ -296,6 +306,7 @@ bool undirectedGraph::readCityNames(string fileName){
     }
 
     cityFile.close();
+    return true;
 }
 
 //****************************************************************
@@ -303,12 +314,54 @@ bool undirectedGraph::readCityNames(string fileName){
 
 void undirectedGraph::printMST() const{
 
+    string dashes12;
+    string dashes19;
+    dashes12.append(12, '-');
+    dashes19.append(19, '-');
+
+    cout << endl << "By Vertex's:" << endl;
+    cout << dashes12 << endl;
+
+    for(int i = 0; i < vertexCount; ++i){
+        cout << i << " - " << pred[i] << "   " << dist[i] << endl;
+    }
+
+    cout << endl << "By Elbonian Cities:" << endl;
+    cout << dashes19 << endl;
+
+    for(int i = 0; i < vertexCount; ++i){
+        cout << cityNames[i] << " - " << cityNames[int(pred[i])] << "   " << dist[i] << endl;
+    }
+
+    double totalCost = 0;
+    for(int i = 0; i < vertexCount; ++i){
+        totalCost += dist[i];
+    }
+
+    cout << fixed << setprecision(2) << endl << "Total Cost: " << totalCost << "k" << endl;
+
 }
 
 //----------------------------------------------------------------
 
 void undirectedGraph::destroyGraph(){
 
+    for(int i = 0; i < vertexCount; ++i){
+        delete[] graphMatrix[i];
+    }
+
+    delete[] graphMatrix;
+    delete[] dist;
+    delete[] pred;
+    delete[] cityNames;
+
+    graphMatrix = nullptr;
+    dist = nullptr;
+    pred = nullptr;
+    cityNames = nullptr;
+
+    vertexCount = 0;
+    title = {};
 
 }
 

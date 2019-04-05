@@ -52,7 +52,7 @@ private:
     constexpr static double INF = std::numeric_limits<double>::max();
 
     void printMST() const;                      // Access the predecessor array (pred), the distances array (dist), and the city names array to display the
-                                                // final result. Include the MST by vertex number and then again using the city names. IF the city names are
+                                                // final result. Include the MST by vertex number and then again using the city names. If the city names are
                                                 // not available, only the vertex's should be printed.
     void destroyGraph();
 
