@@ -134,10 +134,9 @@ bool priorityQueue<myType>::deleteMin(myType &minEntry, int &minPriority){
     myHeap[count].priority = 0;
     count--;
 
+
     // reheapDown from the first index, which is the root.
     reheapDown(1);
-
-    // Update count after maintaining heap property.
 
 
     return true;

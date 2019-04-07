@@ -21,12 +21,7 @@ undirectedGraph::undirectedGraph(){
 
 //----------------------------------------------------------------
 
-undirectedGraph::undirectedGraph(int numOfVertex){
-
-    if(numOfVertex <= 5){
-        cout << "Invalid vertex count." << endl;
-        exit(-1);
-    }
+undirectedGraph::undirectedGraph(int numOfVertex = 5){
 
     vertexCount = numOfVertex;
     title = {};
@@ -34,6 +29,12 @@ undirectedGraph::undirectedGraph(int numOfVertex){
     dist = nullptr;
     pred = nullptr;
     cityNames = nullptr;
+
+    if(numOfVertex < 5){
+        cout << "undirectedGraph: Error, invalid graph size." << endl;
+        vertexCount = 0;
+        return;
+    }
 
     setGraphSize(vertexCount);
 }
@@ -68,6 +69,12 @@ void undirectedGraph::setTitle(const string graphTitle){
 
 void undirectedGraph::setGraphSize(int numOfVertex){
 
+    // Check for vertex count validity.
+    if(numOfVertex < 5){
+        cout << "setGraphSize: Error, invalid graph size." << endl;
+        return;
+    }
+
     // Destroy old graph to prevent memory leak.
     if(graphMatrix != nullptr) destroyGraph();
 
@@ -82,7 +89,7 @@ void undirectedGraph::setGraphSize(int numOfVertex){
         graphMatrix[row] = new double[vertexCount];
             
             for(int column = 0; column < vertexCount; ++column){
-                graphMatrix[row][column] = 0;
+                graphMatrix[row][column] = int(INF);
             } // end for()
 
     } // end for()
@@ -93,19 +100,25 @@ void undirectedGraph::setGraphSize(int numOfVertex){
 
 void undirectedGraph::addEdge(int fromVertex, int toVertex, double weight){
 
+if(graphMatrix == nullptr){
+    cout << "addEdge: error, no graph, can not add edge." << endl;
+    return;
+}
+
 // Verify the parameters for validity
 if(fromVertex == toVertex){
-    cout << "From and to vertices are equal." << endl;
+    //cout << "from: " << fromVertex << "  " << "to: " << toVertex << endl;
+    cout << "addEdge: error, vertex to and from can not be the same." << endl;
     return;
 }
 
 if(fromVertex >= vertexCount || toVertex >= vertexCount){
-    cout << "Vertex parameters exceeds vertex count." << endl;
+    cout << "addEdge: error, invalid vertex." << endl;
     return;
 }
 
 if(fromVertex < 0 || toVertex < 0){
-    cout << "Vertex parameters too low." << endl;
+    cout << "addEdge: error, invalid vertex." << endl;
     return;
 }
 
@@ -123,18 +136,17 @@ bool undirectedGraph::readGraph(const string fileName){
     graphFile.open(fileName);
     
     if(!graphFile.is_open()){
-        cout << "File cannot be opened." << endl;
         return false;
     }
 
     // The first line contains title.
-    graphFile >> title;
+    getline(graphFile, title);
     setTitle(title);
 
     // The second line contains vertexCount.
     graphFile >> vertexCount;
     if(vertexCount < 5){
-        cout << "Vertex count too low." << endl;
+        cout << "readGraph: error, vertex count too low." << endl;
         return false;
     }
 
@@ -148,12 +160,8 @@ bool undirectedGraph::readGraph(const string fileName){
     int from = 0, to = 0;
     double weight = 0.0;
 
-    // Add all the edges to the graphMatrix.
-    for(int i = 0; i < numOfEdges; ++i){
-        
-        graphFile >> from >> to >> weight;
+    while(graphFile >> from >> to >> weight){
         addEdge(from, to, weight);
-
     }
 
     graphFile.close();
@@ -169,35 +177,46 @@ int undirectedGraph::getGraphSize() const{
 //----------------------------------------------------------------
 
 void undirectedGraph::printMatrix() const{
-    cout << "Graph Adjacency Maxtrix:" << endl;
+
+    if(graphMatrix == nullptr){
+        cout << "printMatrix: Error, no graph data." << endl;
+        return;
+    }
+
+    cout << "Graph Adjacency Matrix:" << endl;
     cout << "   Title: " << getTitle() << endl << endl;
 
     string dashes;
     dashes.append(8, '-');
     
     // Output top row with indexs representing vertices.
-    cout << setw(5) << "";
-    for(int col = 0; col <= 5; col++){
+    cout << setw(6) << "";
+    for(int col = 0; col < vertexCount; col++){
         cout << setw(8) << col;
     }
     cout << endl;
     
     // Outputs dashes
-    cout << setw(5) << "";
-    for(int col = 0; col <= 5; col++){
+    cout << setw(6) << "";
+    for(int col = 0; col < vertexCount; col++){
         cout << setw(8) << dashes;
     }
     cout << endl;
+
+
+    // Show two decimal places to the right.
+    cout << fixed << setprecision(2);
     
     // Outputs the graphMatrix
-    for(int row = 0; row <= 5; ++row){
+    for(int row = 0; row < vertexCount; ++row){
         
-        cout << setw(5) << row << "|";
+        cout << setw(6) << row << "|";
 
-        for(int column = 0; column <= 5; ++column){
+        // Fill the table with -- for all connections.
+        for(int column = 0; column < vertexCount; ++column){
             
             if(row == column) cout << setw(8) << "*";
-            else if(graphMatrix[row][column] == 0) cout << setw(8) << "--";
+            else if(graphMatrix[row][column] == int(INF)) cout << setw(8) << "--";
             else cout << setw(8) << graphMatrix[row][column];
 
         } // end for()
@@ -205,11 +224,18 @@ void undirectedGraph::printMatrix() const{
         cout << endl;
 
     } // end for()
+
+    cout << endl;
 }
 
 //----------------------------------------------------------------
 
 void undirectedGraph::prims(int sourceVertex){
+
+    if(sourceVertex != 0){
+        cout << "prims: Error, invalid source node." << endl;
+        return;
+    }
 
     priorityQueue<double> minWeightHeap;
 
@@ -219,6 +245,7 @@ void undirectedGraph::prims(int sourceVertex){
     double minValVertex = 0;
     double adjVertex = 0;
     int vertexPriority = 0;
+
 
     // Set up heap, predecessor, and distance array.
     for(int i = 0; i < vertexCount; ++i){
@@ -255,9 +282,10 @@ void undirectedGraph::prims(int sourceVertex){
 
             // Hold column at the min vertex and find all adjacent vertices
             // to the minValVertex.
-            if(graphMatrix[i][int(minValVertex)] != 0){
+            if(graphMatrix[i][int(minValVertex)] != int(INF)){
                 
                 adjVertex = i;
+
                 
                 // Change dist, pred, and priority if adjVertex has lower weight edge to 
                 // the minValVertex that was dequeued.
@@ -273,7 +301,9 @@ void undirectedGraph::prims(int sourceVertex){
 
 
                     // Change the priority value of the adjVertex in the heap and peform reheapUp to sustain heap structure.
-                    minWeightHeap.changePriority(adjVertex, graphMatrix[int(minValVertex)][int(adjVertex)]);
+                    // Priority is multiplied by 100000 so that it can properly be compared inside the heap. Some priority values
+                    // may contain more than one decimal places.
+                    minWeightHeap.changePriority(adjVertex, graphMatrix[int(minValVertex)][int(adjVertex)] * 100000);
 
                 }
 
@@ -291,11 +321,16 @@ void undirectedGraph::prims(int sourceVertex){
 
 bool undirectedGraph::readCityNames(string fileName){
 
+    if(graphMatrix == nullptr){
+        cout << "readCityNames: Error, no graph defined." << endl;
+        return false;
+    }
+
     // Open and check file.
     fstream cityFile;
     cityFile.open(fileName);
     if(!cityFile.is_open()){
-        cout << "City file could not be opened." << endl;
+        cout << "readCityNames: cityName file could not be opened." << endl;
         return false;
     }
 
@@ -316,21 +351,29 @@ void undirectedGraph::printMST() const{
 
     string dashes12;
     string dashes19;
+    string dashes32;
+    string stars65;
     dashes12.append(12, '-');
     dashes19.append(19, '-');
+    dashes32.append(32, '-');
+    stars65.append(65, '*');
+
+    cout << endl << stars65 << endl;
+    cout << "Elbonian Internet Configuration:" << endl;
+    cout << dashes32 << endl;
 
     cout << endl << "By Vertex's:" << endl;
     cout << dashes12 << endl;
 
-    for(int i = 0; i < vertexCount; ++i){
-        cout << i << " - " << pred[i] << "   " << dist[i] << endl;
+    for(int i = 1; i < vertexCount; ++i){
+        cout << i << " - " << int(pred[i]) << "  " << dist[i] << endl;
     }
 
     cout << endl << "By Elbonian Cities:" << endl;
     cout << dashes19 << endl;
 
-    for(int i = 0; i < vertexCount; ++i){
-        cout << cityNames[i] << " - " << cityNames[int(pred[i])] << "   " << dist[i] << endl;
+    for(int i = 1; i < vertexCount; ++i){
+        cout << cityNames[i] << " - " << cityNames[int(pred[i])] << "  " << dist[i] << endl;
     }
 
     double totalCost = 0;
@@ -338,7 +381,7 @@ void undirectedGraph::printMST() const{
         totalCost += dist[i];
     }
 
-    cout << fixed << setprecision(2) << endl << "Total Cost: " << totalCost << "k" << endl;
+    cout << endl << "Total Cost:  $" << totalCost << "k" << endl;
 
 }
 

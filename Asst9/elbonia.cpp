@@ -99,10 +99,8 @@ int main(int argc, char *argv[])
 		{
 			// note, this ensure destructor is called...
 			undirectedGraph	okGraph(1000);
-
 		}
 	}
-
 // ------------------------------------------------------------------
 //  Create graph from file.
 
