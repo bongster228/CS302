@@ -2,6 +2,8 @@
 #define SKIPLIST_H
 #include <cstdlib>
 #include <iostream>
+#include <cmath>
+#include <iomanip>
 
 
 // Node struct for linked list
@@ -156,6 +158,9 @@ void skipList<myType>::printSkipList() const{
         std::cout << "Value: " << curr -> keyValue << " Count: " << curr -> count << std::endl;   
     }
 
+    std::cout << "nodeCnt: " << nodeCount << std::endl;
+    std::cout << "totalCnt: " << totalCount << std::endl;
+
     std::cout << "Height: " << height << std::endl;
 
     std::cout << std::endl;
@@ -166,7 +171,33 @@ void skipList<myType>::printSkipList() const{
 template<class myType>
 void skipList<myType>::showSkipListStats() const{
 
+    std::cout << "Skip List Stats" << std::endl;
+    std::cout << "\tCurrent Height: " << height << std::endl;
+    std::cout << std::fixed << std::setprecision(0) << "\tExptected Height: " << log2(nodeCount) << std::endl;
+    std::cout << "\tNumber of nodes in each level:" << std::endl;
 
+    // Use loop to traverse each layer down to the base list. Keep a counter to count
+    // the number of nodes in each layer.
+    nodeType<myType> *lvlPtr, *lvlCounter;
+    int nodeCounter;
+    lvlPtr = head;
+
+    for(int i = height; i >= 0; --i){
+        nodeCounter = 0;
+
+        // Start from the beginning of the level and count until right sentinel is reached.
+        lvlCounter = lvlPtr -> right;
+        while(lvlCounter -> isSent != 1){
+            nodeCounter++;
+            lvlCounter = lvlCounter -> right;
+        }
+
+        std::cout << "\t\tLevel " << i << ": " << nodeCounter << " nodes." << std::endl;
+
+        // Move down one level.
+        lvlPtr = lvlPtr -> down;
+        
+    }
 
 }
 
@@ -295,6 +326,7 @@ bool skipList<myType>::insert(myType item, nodeType<myType> *p){
         towerHeight++;
     }
     nodeCount++;
+    totalCount++;
 
     return true;
 }
